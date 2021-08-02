@@ -22,7 +22,7 @@ a {
   position: relative;
 }
 
-header nav {
+.header_nav {
   position: relative;
   display: flex;
   height: 60px;
@@ -43,7 +43,6 @@ header .nav__wrapper {
   font-family: 'Lato', sans-serif;
   font-weight: 700;
   font-size: 14px;
-  width: 300px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -156,7 +155,7 @@ header .subheader .subheader_menu a:hover {
 .about_cracker-img {
   position: absolute;
 }
-.about h1 {
+.about h2 {
   font-family: 'Fredoka One', cursive;
   font-weight: 400;
   font-size: 48px;
@@ -395,6 +394,7 @@ header .subheader .subheader_menu a:hover {
 }
 .item_descr {
   transform: translateX(50px);
+  color: #fff;
 }
 .footer_item_list {
 }
@@ -405,13 +405,18 @@ header .subheader .subheader_menu a:hover {
 }
 .footer_item_list li i {
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   border: 1px solid #fff;
   width: 50px;
   height: 50px;
   border-radius: 25px;
   margin-right: 10px;
+}
+.footer_item_list li a {
+  display: flex;
+  align-items: center;
+  color: #fff;
 }
 .details-cart {
   position: absolute;
@@ -533,7 +538,7 @@ header .subheader .subheader_menu a:hover {
   .progress_precent-item {
     width: 15px;
   }
-  .about h1 {
+  .about h2 {
     position: relative;
     z-index: 1;
   }
@@ -552,7 +557,7 @@ header .subheader .subheader_menu a:hover {
   }
 }
 @media (max-width: 767px) {
-  header nav {
+  .header_nav {
     position: fixed;
     width: 100vw;
   }
@@ -626,7 +631,7 @@ header .subheader .subheader_menu a:hover {
     font-size: 12px;
     line-height: 20px;
   }
-  .about h1 {
+  .about h2 {
     font-size: 35px;
   }
   .about-descr {
@@ -691,7 +696,7 @@ header .subheader .subheader_menu a:hover {
     font-size: 30px;
     bottom: 50px;
   }
-  .about h1 {
+  .about h2 {
     font-size: 30px;
     text-align: center;
   }
@@ -762,7 +767,7 @@ header .subheader .subheader_menu a:hover {
   .active {
     right: 0 !important;
   }
-  header nav {
+  .header_nav {
     z-index: 3;
   }
   header .subheader .subheader_menu {
@@ -797,7 +802,7 @@ header .subheader .subheader_menu a:hover {
   .promo {
     min-height: 820px;
   }
-  .about h1 {
+  .about h2 {
     font-size: 25px;
   }
   .about .about_cart {

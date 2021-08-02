@@ -22,7 +22,7 @@
   </head>
   <body>
     <header>
-      <nav>
+      <nav class="header_nav">
         <div class="container">
           <div class="row">
             <div class="nav__wrapper">
@@ -37,253 +37,259 @@
                   offset-2 offset-sm-5 offset-md-4 offset-lg-6
                 "
               >
-                <ul class="menu">
-                  <li class="menu_item">
-                    <a class="menu_link" href="#">
-                      <img src="assets/img/header/semen.png" alt="semen" />
-                    </a>
-                  </li>
-                  <li class="menu_item">
-                    <a class="menu_link" href="#"
-                      >Total:<span>143&#8364;</span></a
-                    >
-                  </li>
-                  <li class="menu_item">
-                    <a class="menu_link menu_link-details" href="#">
-                      Details
-                      <i class="fas fa-chevron-down"></i>
-                    </a>
-                  </li>
-                  <div
-                    class="
-                      col-lg-12
-                      offset-lg-5
-                      details-cart
-                      col-md-10 col-sm-6 col-12
-                      offset-md-2
-                    "
-                  >
-                    <div class="details-cart-wrapper">
-                      <ul
-                        class="
-                          col-lg-4 col-sm-8 col-md-5 col-9
-                          details_ingredient
-                        "
+                <nav>
+                  <ul class="menu">
+                    <li class="menu_item">
+                      <a class="menu_link" href="#">
+                        <img src="assets/img/header/semen.png" alt="semen" />
+                      </a>
+                    </li>
+                    <li class="menu_item">
+                      <a class="menu_link" href="#"
+                        >Total:<span>143&#8364;</span></a
                       >
-                        <li class="details_item">
-                          <img
-                            src="assets/img/header/header-details/ingredient-ico-1.png"
-                            alt="ingredient"
-                          />
-                        </li>
-                        <li class="details_item">
-                          <img
-                            src="assets/img/header/header-details/ingredient-ico-2.png"
-                            alt="ingredient"
-                          />
-                        </li>
-                        <li class="details_item">
-                          <img
-                            src="assets/img/header/header-details/ingredient-ico-3.png"
-                            alt="ingredient"
-                          />
-                        </li>
-                        <li class="details_item">
-                          <img
-                            src="assets/img/header/header-details/ingredient-ico-4.png"
-                            alt="ingredient"
-                          />
-                        </li>
-                      </ul>
-                      <ul class="details_progress-bar">
-                        <li class="details_progress-item">
-                          <div class="col-md-1 details_progress-item-img">
+                    </li>
+                    <li class="menu_item">
+                      <a class="menu_link menu_link-details" href="#">
+                        Details
+                        <i class="fas fa-chevron-down"></i>
+                      </a>
+                    </li>
+                    <div
+                      class="
+                        col-lg-12
+                        offset-lg-5
+                        details-cart
+                        col-md-10 col-sm-6 col-12
+                        offset-md-2
+                      "
+                    >
+                      <div class="details-cart-wrapper">
+                        <ul
+                          class="
+                            col-lg-4 col-sm-8 col-md-5 col-9
+                            details_ingredient
+                          "
+                        >
+                          <li class="details_item">
                             <img
-                              src="assets/img/header/header-details/semen-black.png"
-                              alt="semen-black"
+                              src="assets/img/header/header-details/ingredient-ico-1.png"
+                              alt="ingredient"
                             />
+                          </li>
+                          <li class="details_item">
+                            <img
+                              src="assets/img/header/header-details/ingredient-ico-2.png"
+                              alt="ingredient"
+                            />
+                          </li>
+                          <li class="details_item">
+                            <img
+                              src="assets/img/header/header-details/ingredient-ico-3.png"
+                              alt="ingredient"
+                            />
+                          </li>
+                          <li class="details_item">
+                            <img
+                              src="assets/img/header/header-details/ingredient-ico-4.png"
+                              alt="ingredient"
+                            />
+                          </li>
+                        </ul>
+                        <nav>
+                          <ul class="details_progress-bar">
+                            <li class="details_progress-item">
+                              <div class="col-md-1 details_progress-item-img">
+                                <img
+                                  src="assets/img/header/header-details/semen-black.png"
+                                  alt="semen-black"
+                                />
+                              </div>
+                              <div class="col-md-9 item_progress">
+                                <ul
+                                  class="
+                                    col-lg-5 col-md-6 col-sm-11
+                                    progress_percent
+                                  "
+                                >
+                                  <li class="progress_precent-item">4%</li>
+                                  <li class="progress_precent-item">15%</li>
+                                  <li class="progress_precent-item">61%</li>
+                                  <li class="progress_precent-item">20%</li>
+                                </ul>
+                                <div class="progress">
+                                  <div
+                                    class="progress-bar"
+                                    role="progressbar"
+                                    style="width: 4%"
+                                    aria-valuenow="15"
+                                    aria-valuemin="0"
+                                    aria-valuemax="100"
+                                  ></div>
+                                  <div
+                                    class="progress-bar bg-success"
+                                    role="progressbar"
+                                    style="width: 15%"
+                                    aria-valuenow="30"
+                                    aria-valuemin="0"
+                                    aria-valuemax="100"
+                                  ></div>
+                                  <div
+                                    class="progress-bar bg-info"
+                                    role="progressbar"
+                                    style="width: 61%"
+                                    aria-valuenow="20"
+                                    aria-valuemin="0"
+                                    aria-valuemax="100"
+                                  ></div>
+                                  <div
+                                    class="progress-bar bg-dark"
+                                    role="progressbar"
+                                    style="width: 20%"
+                                    aria-valuenow="20"
+                                    aria-valuemin="0"
+                                    aria-valuemax="100"
+                                  ></div>
+                                </div>
+                              </div>
+                              <div class="col-md-1 details_delete">
+                                <button class="btn-delete">
+                                  <i class="fas fa-times"></i>
+                                </button>
+                              </div>
+                            </li>
+                            <li class="details_progress-item">
+                              <div class="col-md-1 details_progress-item-img">
+                                <img
+                                  src="assets/img/header/header-details/semen-black.png"
+                                  alt="semen-black"
+                                />
+                              </div>
+                              <div class="col-md-9 item_progress">
+                                <ul class="col-lg-5 col-md-6 progress_percent">
+                                  <li class="progress_precent-item">14%</li>
+                                  <li class="progress_precent-item">19%</li>
+                                  <li class="progress_precent-item">51%</li>
+                                  <li class="progress_precent-item">16%</li>
+                                </ul>
+                                <div class="progress">
+                                  <div
+                                    class="progress-bar"
+                                    role="progressbar"
+                                    style="width: 14%"
+                                    aria-valuenow="15"
+                                    aria-valuemin="0"
+                                    aria-valuemax="100"
+                                  ></div>
+                                  <div
+                                    class="progress-bar bg-success"
+                                    role="progressbar"
+                                    style="width: 19%"
+                                    aria-valuenow="30"
+                                    aria-valuemin="0"
+                                    aria-valuemax="100"
+                                  ></div>
+                                  <div
+                                    class="progress-bar bg-info"
+                                    role="progressbar"
+                                    style="width: 51%"
+                                    aria-valuenow="20"
+                                    aria-valuemin="0"
+                                    aria-valuemax="100"
+                                  ></div>
+                                  <div
+                                    class="progress-bar bg-dark"
+                                    role="progressbar"
+                                    style="width: 16%"
+                                    aria-valuenow="20"
+                                    aria-valuemin="0"
+                                    aria-valuemax="100"
+                                  ></div>
+                                </div>
+                              </div>
+                              <div class="col-md-1 details_delete">
+                                <button class="btn-delete">
+                                  <i class="fas fa-times"></i>
+                                </button>
+                              </div>
+                            </li>
+                            <li class="details_progress-item">
+                              <div class="col-md-1 details_progress-item-img">
+                                <img
+                                  src="assets/img/header/header-details/semen-black.png"
+                                  alt="semen-black"
+                                />
+                              </div>
+                              <div class="col-md-9 item_progress">
+                                <ul class="col-lg-5 col-md-6 progress_percent">
+                                  <li class="progress_precent-item">5%</li>
+                                  <li class="progress_precent-item">14%</li>
+                                  <li class="progress_precent-item">65%</li>
+                                  <li class="progress_precent-item">16%</li>
+                                </ul>
+                                <div class="progress">
+                                  <div
+                                    class="progress-bar"
+                                    role="progressbar"
+                                    style="width: 5%"
+                                    aria-valuenow="15"
+                                    aria-valuemin="0"
+                                    aria-valuemax="100"
+                                  ></div>
+                                  <div
+                                    class="progress-bar bg-success"
+                                    role="progressbar"
+                                    style="width: 14%"
+                                    aria-valuenow="30"
+                                    aria-valuemin="0"
+                                    aria-valuemax="100"
+                                  ></div>
+                                  <div
+                                    class="progress-bar bg-info"
+                                    role="progressbar"
+                                    style="width: 65%"
+                                    aria-valuenow="20"
+                                    aria-valuemin="0"
+                                    aria-valuemax="100"
+                                  ></div>
+                                  <div
+                                    class="progress-bar bg-dark"
+                                    role="progressbar"
+                                    style="width: 16%"
+                                    aria-valuenow="20"
+                                    aria-valuemin="0"
+                                    aria-valuemax="100"
+                                  ></div>
+                                </div>
+                              </div>
+                              <div class="col-md-1 details_delete">
+                                <button class="btn-delete">
+                                  <i class="fas fa-times"></i>
+                                </button>
+                              </div>
+                            </li>
+                          </ul>
+                        </nav>
+                        <div class="col-lg-7 col-md-9 col-sm-3 details_total">
+                          <div class="details_total-info">
+                            Total: <span>143</span>&#8364;
                           </div>
-                          <div class="col-md-9 item_progress">
-                            <ul
-                              class="
-                                col-lg-5 col-md-6 col-sm-11
-                                progress_percent
-                              "
-                            >
-                              <li class="progress_precent-item">4%</li>
-                              <li class="progress_precent-item">15%</li>
-                              <li class="progress_precent-item">61%</li>
-                              <li class="progress_precent-item">20%</li>
-                            </ul>
-                            <div class="progress">
-                              <div
-                                class="progress-bar"
-                                role="progressbar"
-                                style="width: 4%"
-                                aria-valuenow="15"
-                                aria-valuemin="0"
-                                aria-valuemax="100"
-                              ></div>
-                              <div
-                                class="progress-bar bg-success"
-                                role="progressbar"
-                                style="width: 15%"
-                                aria-valuenow="30"
-                                aria-valuemin="0"
-                                aria-valuemax="100"
-                              ></div>
-                              <div
-                                class="progress-bar bg-info"
-                                role="progressbar"
-                                style="width: 61%"
-                                aria-valuenow="20"
-                                aria-valuemin="0"
-                                aria-valuemax="100"
-                              ></div>
-                              <div
-                                class="progress-bar bg-dark"
-                                role="progressbar"
-                                style="width: 20%"
-                                aria-valuenow="20"
-                                aria-valuemin="0"
-                                aria-valuemax="100"
-                              ></div>
-                            </div>
-                          </div>
-                          <div class="col-md-1 details_delete">
-                            <button class="btn-delete">
-                              <i class="fas fa-times"></i>
+                          <div class="details_total-btn">
+                            <button class="details_btn-checkout">
+                              Checkout
                             </button>
                           </div>
-                        </li>
-                        <li class="details_progress-item">
-                          <div class="col-md-1 details_progress-item-img">
-                            <img
-                              src="assets/img/header/header-details/semen-black.png"
-                              alt="semen-black"
-                            />
-                          </div>
-                          <div class="col-md-9 item_progress">
-                            <ul class="col-lg-5 col-md-6 progress_percent">
-                              <li class="progress_precent-item">14%</li>
-                              <li class="progress_precent-item">19%</li>
-                              <li class="progress_precent-item">51%</li>
-                              <li class="progress_precent-item">16%</li>
-                            </ul>
-                            <div class="progress">
-                              <div
-                                class="progress-bar"
-                                role="progressbar"
-                                style="width: 14%"
-                                aria-valuenow="15"
-                                aria-valuemin="0"
-                                aria-valuemax="100"
-                              ></div>
-                              <div
-                                class="progress-bar bg-success"
-                                role="progressbar"
-                                style="width: 19%"
-                                aria-valuenow="30"
-                                aria-valuemin="0"
-                                aria-valuemax="100"
-                              ></div>
-                              <div
-                                class="progress-bar bg-info"
-                                role="progressbar"
-                                style="width: 51%"
-                                aria-valuenow="20"
-                                aria-valuemin="0"
-                                aria-valuemax="100"
-                              ></div>
-                              <div
-                                class="progress-bar bg-dark"
-                                role="progressbar"
-                                style="width: 16%"
-                                aria-valuenow="20"
-                                aria-valuemin="0"
-                                aria-valuemax="100"
-                              ></div>
-                            </div>
-                          </div>
-                          <div class="col-md-1 details_delete">
-                            <button class="btn-delete">
-                              <i class="fas fa-times"></i>
-                            </button>
-                          </div>
-                        </li>
-                        <li class="details_progress-item">
-                          <div class="col-md-1 details_progress-item-img">
-                            <img
-                              src="assets/img/header/header-details/semen-black.png"
-                              alt="semen-black"
-                            />
-                          </div>
-                          <div class="col-md-9 item_progress">
-                            <ul class="col-lg-5 col-md-6 progress_percent">
-                              <li class="progress_precent-item">5%</li>
-                              <li class="progress_precent-item">14%</li>
-                              <li class="progress_precent-item">65%</li>
-                              <li class="progress_precent-item">16%</li>
-                            </ul>
-                            <div class="progress">
-                              <div
-                                class="progress-bar"
-                                role="progressbar"
-                                style="width: 5%"
-                                aria-valuenow="15"
-                                aria-valuemin="0"
-                                aria-valuemax="100"
-                              ></div>
-                              <div
-                                class="progress-bar bg-success"
-                                role="progressbar"
-                                style="width: 14%"
-                                aria-valuenow="30"
-                                aria-valuemin="0"
-                                aria-valuemax="100"
-                              ></div>
-                              <div
-                                class="progress-bar bg-info"
-                                role="progressbar"
-                                style="width: 65%"
-                                aria-valuenow="20"
-                                aria-valuemin="0"
-                                aria-valuemax="100"
-                              ></div>
-                              <div
-                                class="progress-bar bg-dark"
-                                role="progressbar"
-                                style="width: 16%"
-                                aria-valuenow="20"
-                                aria-valuemin="0"
-                                aria-valuemax="100"
-                              ></div>
-                            </div>
-                          </div>
-                          <div class="col-md-1 details_delete">
-                            <button class="btn-delete">
-                              <i class="fas fa-times"></i>
-                            </button>
-                          </div>
-                        </li>
-                      </ul>
-                      <div class="col-lg-7 col-md-9 col-sm-3 details_total">
-                        <div class="details_total-info">
-                          Total: <span>143</span>&#8364;
                         </div>
-                        <div class="details_total-btn">
-                          <button class="details_btn-checkout">Checkout</button>
+                        <div class="details_close">
+                          <button class="btn-close"></button>
                         </div>
-                      </div>
-                      <div class="details_close">
-                        <button class="btn-close"></button>
                       </div>
                     </div>
-                  </div>
-                  <div class="hamburger">
-                    <span></span><span></span><span></span>
-                  </div>
-                </ul>
+                    <div class="hamburger">
+                      <span></span><span></span><span></span>
+                    </div>
+                  </ul>
+                </nav>
               </div>
             </div>
           </div>
@@ -324,11 +330,11 @@
             <div class="col-md-5 col-sm-6 col-7 promo_cart">
               <div class="promo_cart-wrapper">
                 <h1>Mostly tastes with freshes</h1>
-                <div class="offset-md-3 promo_descr">
+                <p class="offset-md-3 promo_descr">
                   Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
                   do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                   do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                </div>
+                </p>
               </div>
             </div>
           </div>
@@ -345,7 +351,7 @@
             <div class="col-md-5 col-sm-5 col-11 about_cracker-img">
               <img src="assets/img/about/about-cracker.png" alt="cracker" />
             </div>
-            <h1
+            <h2
               class="
                 col-lg-7 col-md-12 col-sm-12 col-10
                 offset-1 offset-lg-7 offset-md-3
@@ -353,7 +359,7 @@
               "
             >
               About cracker
-            </h1>
+            </h2>
             <div
               class="
                 about_cart
@@ -362,7 +368,7 @@
                 col-12
               "
             >
-              <div class="col-md-8 col-sm-10 col-12 about-descr">
+              <p class="col-md-8 col-sm-10 col-12 about-descr">
                 Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
                 eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis
                 aute irure dolor in reprehenderit in voluptate velit esse cillum
@@ -374,7 +380,7 @@
                 dolor sit amet, consectetur, adipisci velit, sed quia non
                 numquam eius modi tempora incidunt ut labore et dolore magnam
                 aliquam quaerat voluptatem.
-              </div>
+              </p>
               <div
                 class="
                   col-md-2 col-sm-2
@@ -387,9 +393,9 @@
             </div>
           </div>
           <div class="col-md-12">
-            <h1 class="col-md-10 offset-md-1 col-sm-12 about_h1-constructor">
+            <h2 class="col-md-10 offset-md-1 col-sm-12 about_h1-constructor">
               Cracker constructor
-            </h1>
+            </h2>
             <div class="col-md-12 about_constructor">
               <div
                 class="
@@ -512,7 +518,9 @@
               <h5 class="footer_item-h5">
                 <i class="fas fa-phone-alt"></i>Phone
               </h5>
-              <div class="item_descr">+43 ( 987 ) 345 - 6782</div>
+              <a class="item_descr" href="tel:+439873456782"
+                >+43 ( 987 ) 345 - 6782</a
+              >
             </li>
             <li class="col-md-3 col-sm-4 footer_item">
               <h5 class="footer_item-h5">
@@ -530,16 +538,22 @@
               <div class="item_descr">
                 <ul class="footer_item_list">
                   <li class="footer_item_list_item">
-                    <i class="fab fa-pinterest-p"></i>
-                    https://www.pinterest.com/
+                    <a href="#"
+                      ><i class="fab fa-pinterest-p"></i>
+                      https://www.pinterest.com/</a
+                    >
                   </li>
                   <li class="footer_item_list_item">
-                    <i class="fab fa-facebook-f"></i>
-                    https://www.facebook.com/
+                    <a href="#"
+                      ><i class="fab fa-facebook-f"></i>
+                      https://www.facebook.com/
+                    </a>
                   </li>
                   <li class="footer_item_list_item">
-                    <i class="fab fa-google-plus-g"></i>
-                    https://www.google.com/
+                    <a href="#"
+                      ><i class="fab fa-google-plus-g"></i>
+                      https://www.google.com/
+                    </a>
                   </li>
                 </ul>
               </div>

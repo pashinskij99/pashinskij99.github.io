@@ -1774,7 +1774,8 @@ function sliderRange(selectorRange, spanValue) {
 
     if (inputRange1.value > 100 - (+inputRange2.value + +inputRange3.value)) {
       inputRange1.value = 100 - +inputRange2.value - +inputRange3.value;
-      console.log('all');
+    } else if (inputRange2.value > 100 - (+inputRange1.value + +inputRange3.value)) {
+      inputRange2.value = 100 - +inputRange1.value - +inputRange3.value;
     }
 
     inputRange4.value = 100 - +inputRange1.value - +inputRange2.value - +inputRange3.value;
