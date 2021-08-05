@@ -424,7 +424,7 @@ header .subheader .subheader_menu a:hover {
   background-color: #fff;
   top: 60px;
   left: 0;
-  width: 100vh;
+  max-width: 50%;
 }
 .details_ingredient {
   display: flex;
@@ -525,7 +525,19 @@ header .subheader .subheader_menu a:hover {
 
 @media (max-width: 1200px) {
   .item_descr {
-    width: 270px;
+    transform: translateX(10px);
+    width: 100%;
+  }
+}
+@media (max-width: 1200px) {
+  .item_descr {
+    transform: none;
+  }
+  .details-cart {
+    max-width: 55%;
+  }
+  .about_h1-constructor {
+    margin-top: 600px;
   }
 }
 @media (max-width: 991px) {
@@ -555,11 +567,21 @@ header .subheader .subheader_menu a:hover {
   .item_descr {
     transform: none;
   }
+  .footer_list {
+    flex-direction: column;
+  }
+  .footer_list li {
+    margin-bottom: 20px;
+  }
+  .details-cart {
+    max-width: 80%;
+  }
 }
 @media (max-width: 767px) {
   .header_nav {
     position: fixed;
     width: 100vw;
+    z-index: 3;
   }
   .promo h1 {
     font-size: 35px;
@@ -599,6 +621,7 @@ header .subheader .subheader_menu a:hover {
     right: -100%;
     height: 100vh;
     transition: all 0.3s;
+    z-index: 2;
   }
   .active {
     right: 0 !important;
@@ -609,6 +632,7 @@ header .subheader .subheader_menu a:hover {
     flex-direction: column;
     justify-content: space-between;
     height: 300px;
+    margin-top: 100px;
   }
   header .subheader .subheader_menu a {
     padding: 10px 20px;
@@ -617,6 +641,7 @@ header .subheader .subheader_menu a:hover {
     position: absolute;
     top: 60px;
     right: 0;
+    max-width: 100%;
   }
   .progress {
     width: 255px;
@@ -634,6 +659,9 @@ header .subheader .subheader_menu a:hover {
   .about h2 {
     font-size: 35px;
   }
+  .about_h1-constructor {
+    margin-top: 450px;
+  }
   .about-descr {
     font-size: 12px;
     line-height: 22px;
@@ -649,7 +677,6 @@ header .subheader .subheader_menu a:hover {
   }
   .footer_item {
     font-size: 12px;
-    text-align: center;
   }
   .item_descr {
     width: 150px;
@@ -668,8 +695,8 @@ header .subheader .subheader_menu a:hover {
     padding: 10px 0 10px 10px;
   }
   .details_ingredient {
-    width: 315px;
-    margin-left: 75px;
+    width: 230px;
+    margin-left: 53px;
   }
   .progress_percent {
     margin: 0;
@@ -696,8 +723,11 @@ header .subheader .subheader_menu a:hover {
     font-size: 30px;
     bottom: 50px;
   }
+  h2 {
+    font-size: 26px;
+  }
   .about h2 {
-    font-size: 30px;
+    font-size: 26px;
     text-align: center;
   }
   .details_progress-item {
@@ -706,9 +736,10 @@ header .subheader .subheader_menu a:hover {
   .details_total {
     width: 315px;
     margin-left: 0;
+    flex-direction: column;
   }
   .progress {
-    width: 315px;
+    width: 230px;
   }
   .about .about_cart {
     padding: 30px 5px 60px 50px;
@@ -719,11 +750,15 @@ header .subheader .subheader_menu a:hover {
   .constructor_range-value {
     font-size: 20px;
   }
+  .constructor_item {
+    flex-direction: column;
+    margin-bottom: 20px;
+  }
   .constructor_item img {
     width: 60px;
   }
   .about_btn {
-    width: 240px;
+    min-width: 95%;
     transform: none !important;
     border-radius: 20px;
   }
@@ -734,16 +769,26 @@ header .subheader .subheader_menu a:hover {
   .about_btn:hover {
     width: 240px;
   }
+  .about {
+    min-height: 1600px;
+  }
+  .about_cracker-img img {
+    width: 100%;
+  }
   .select {
-    width: 350px;
+    width: 100%;
   }
   .constructor_menu .constructor_item:last-child {
-    width: 415px;
+    width: 100%;
     z-index: 1;
   }
   .select_current,
   .select_item {
+    text-align: center;
     font-size: 20px;
+  }
+  .select_icon {
+    display: none;
   }
   .footer_item-h5 {
     font-size: 14px;
@@ -751,8 +796,14 @@ header .subheader .subheader_menu a:hover {
   .footer {
     min-height: 400px;
   }
+  .footer_item_list li {
+    display: grid;
+  }
 }
 @media (max-width: 320.98px) {
+  h2 {
+    font-size: 20px !important;
+  }
   .menu {
     width: 240px;
   }
@@ -761,14 +812,13 @@ header .subheader .subheader_menu a:hover {
   }
   header .subheader {
     width: 101vw;
-    z-index: 2;
+
     background-color: rgba(0, 0, 0, 0.9);
   }
   .active {
     right: 0 !important;
   }
   .header_nav {
-    z-index: 3;
   }
   header .subheader .subheader_menu {
     margin-top: 100px;
@@ -808,9 +858,7 @@ header .subheader .subheader_menu a:hover {
   .about .about_cart {
     padding: 30px 5px 60px 5px;
   }
-  .about_cracker-img img {
-    width: 100%;
-  }
+
   .about_btn {
     width: 91vw;
     transform: none !important;
