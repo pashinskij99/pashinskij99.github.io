@@ -10,8 +10,6 @@ const renderer = new THREE.WebGLRenderer()
 renderer.setSize(window.innerWidth, window.innerHeight)
 document.body.appendChild(renderer.domElement)
 
-controls = new THREE.OrbitControls(camera, renderer.domElement)
-
 camera.position.z = 135
 
 // DOM
@@ -62,8 +60,8 @@ btn.addEventListener('click', (event) => {
 
       function animate() {
          requestAnimationFrame(animate)
-         cube.rotation.x += 0.01
-         cube.rotation.y += 0.01
+         // cube.rotation.x += 0.01
+         // cube.rotation.y += 0.01
          renderer.render(scene, camera)
       }
       animate()
@@ -129,3 +127,5 @@ btn.addEventListener('click', (event) => {
       animate()
    }
 })
+
+controls = new THREE.OrbitControls(camera, renderer.domElement)
