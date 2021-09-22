@@ -53,7 +53,7 @@ btn.addEventListener('click', (event) => {
          input.value
       )
       const material = new THREE.MeshBasicMaterial({
-         color: '#000',
+         color: '#fff',
          wireframe: false,
       })
       const cube = new THREE.Mesh(geometry, material)
