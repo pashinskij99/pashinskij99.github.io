@@ -1,35 +1,51 @@
+const canvas = document.querySelector('canvas.webgl')
 const scene = new THREE.Scene()
+
+const textureLoader = new THREE.TextureLoader()
+
+const normalTexture = textureLoader.load('/textures/NormalMap.png')
+
+const sizes = {
+   width: window.innerWidth,
+   height: window.innerHeight,
+}
+
+window.addEventListener('resize', () => {
+   sizes.width = window.innerWidth
+   sizes.height = window.innerHeight
+
+   camera.aspect = sizes.width / sizes.height
+   camera.updateProjectMatrix()
+
+   renderer.setSize(sizes.width, sizes.height)
+   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+})
+
 const camera = new THREE.PerspectiveCamera(
    75,
-   window.innerWidth / window.innerHeight,
+   sizes.width / sizes.height,
    0.1,
-   1000
+   100
 )
+camera.position.x = 0
+camera.position.y = 0
+camera.position.z = 2
+scene.add(camera)
 
-let light = new THREE.PointLight(0xffffff, 1.5, 30000)
-light.position.set(0, 0, 0)
-light.castShadow = true
-light.shadowMapWidth = 2048
-light.shadowMapHeight = 2048
-scene.add(light)
+const pointLight = new THREE.PointLight(0xffffff, 0.1)
+pointLight.position.x = 2
+pointLight.position.y = 3
+pointLight.position.z = 4
+scene.add(pointLight)
 
-// const plane = new THREE.Mesh(
-//    new THREE.PlaneGeometry(400, 200, 100, 100),
-//    new THREE.MeshLambertMaterial({ color: 0x008cf0 })
-// )
-// plane.position.y = -Math.PI / 2
-// plane.receiveShadow = true
-// scene.add(plane)
+const renderer = new THREE.WebGLRenderer({
+   canvas: canvas,
+   alpha: true,
+})
+renderer.setSize(sizes.width, sizes.height)
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
-const renderer = new THREE.WebGLRenderer()
-renderer.shadowMap.Enabled = true
-
-renderer.setSize(window.innerWidth, window.innerHeight)
-document.body.appendChild(renderer.domElement)
-
-camera.position.z = 400
-camera.position.y = 10
-
+//
 controls = new THREE.OrbitControls(camera, renderer.domElement)
 
 // DOM
@@ -40,42 +56,47 @@ const list = document.querySelector('.elem-list-inner')
 
 select.addEventListener('change', function () {
    let key = this.value
-   console.log(key)
 })
 
 btn.addEventListener('click', (event) => {
    event.preventDefault()
-   console.log(input.value)
    if (select.value == 'cube') {
       const geometry = new THREE.BoxGeometry(
          input.value,
          input.value,
          input.value
       )
-      const material = new THREE.MeshBasicMaterial({
-         color: '#fff',
-         wireframe: false,
-      })
+      const material = new THREE.MeshStandardMaterial()
+      material.metalness = 0.7
+      material.roughness = 0.2
+      material.normalMap = normalTexture
+      material.color = new THREE.Color(0x292929)
       const cube = new THREE.Mesh(geometry, material)
       cube.castShadow = true
+      cube.name = scene.children.length
       scene.add(cube)
-      cube.position.x = Math.floor(Math.random() * 5)
-      cube.position.y = Math.floor(Math.random() * 5)
+      cube.position.x = Math.floor(Math.random() * 3)
+      cube.position.y = Math.floor(Math.random() * 3)
+      cube.position.z = Math.floor(Math.random() * 3)
+
       const elem = document.createElement('li')
       elem.classList.add('list-item', 'list-group-item')
       elem.innerHTML = `
       <div id="id">${cube.uuid}</div>
-      <button class="btn-delete">Delete</button>
+      <button class="btn btn-delete">X</button>
       `
       list.append(elem)
       const btnDelete = document.querySelectorAll('.btn-delete')
-      const id = document.getElementById('id')
-      console.log(id.textContent)
 
-      btnDelete.forEach((item) => {
+      btnDelete.forEach((item, i) => {
          item.addEventListener('click', () => {
-            console.log('asdasdsa')
             item.parentNode.remove()
+
+            function removeEntity(objectName) {
+               var selectedObject = scene.getObjectByName(objectName)
+               scene.remove(selectedObject)
+            }
+            removeEntity(i + 2)
          })
       })
 
@@ -86,26 +107,43 @@ btn.addEventListener('click', (event) => {
       animate()
    } else if (select.value == 'cylinder') {
       const geometry2 = new THREE.CylinderGeometry(
-         input.value,
-         input.value,
-         input.value,
-         input.value
+         input.value / 2,
+         input.value / 2,
+         input.value / 2
+         // input.value * 4
       )
-      const material2 = new THREE.MeshBasicMaterial({
-         color: '#fff',
-         wireframe: true,
-      })
+      const material2 = new THREE.MeshStandardMaterial()
+      material2.metalness = 0.7
+      material2.roughness = 0.2
+      material2.normalMap = normalTexture
+      material2.color = new THREE.Color(0x292929)
       const cylinder = new THREE.Mesh(geometry2, material2)
+      cylinder.name = scene.children.length
       scene.add(cylinder)
-      cylinder.position.x = Math.floor(Math.random() * 100)
-      cylinder.position.y = Math.floor(Math.random() * 100)
+      cylinder.position.x = Math.floor(Math.random() * 3)
+      cylinder.position.y = Math.floor(Math.random() * 3)
+      cylinder.position.z = Math.floor(Math.random() * 3)
       const elem = document.createElement('li')
       elem.classList.add('list-item', 'list-group-item')
       elem.innerHTML = `
-      ${cylinder.uuid}
-      <button class="btn-delete">Delete</button>
+      <div id="id">${cylinder.uuid}</div>
+      <button class="btn btn-delete">X</button>
       `
       list.append(elem)
+
+      const btnDelete = document.querySelectorAll('.btn-delete')
+
+      btnDelete.forEach((item, i) => {
+         item.addEventListener('click', () => {
+            item.parentNode.remove()
+
+            function removeEntity(objectName) {
+               var selectedObject = scene.getObjectByName(objectName)
+               scene.remove(selectedObject)
+            }
+            removeEntity(i + 2)
+         })
+      })
 
       function animate() {
          requestAnimationFrame(animate)
@@ -114,26 +152,43 @@ btn.addEventListener('click', (event) => {
       animate()
    } else if (select.value == 'sphere') {
       const geometry3 = new THREE.SphereGeometry(
-         input.value,
-         input.value,
-         input.value
+         input.value / 2,
+         input.value * 5,
+         input.value * 5
       )
-      const material3 = new THREE.MeshBasicMaterial({
-         color: '#fff',
-         wireframe: true,
-      })
+      const material3 = new THREE.MeshStandardMaterial()
+      material3.metalness = 0.7
+      material3.roughness = 0.2
+      material3.normalMap = normalTexture
+      material3.color = new THREE.Color(0x292929)
       const sphere = new THREE.Mesh(geometry3, material3)
+      sphere.name = scene.children.length
       scene.add(sphere)
-      sphere.position.x = Math.floor(Math.random() * 100)
-      sphere.position.y = Math.floor(Math.random() * 100)
+      sphere.position.x = Math.floor(Math.random() * 3)
+      sphere.position.y = Math.floor(Math.random() * 3)
+      sphere.position.z = Math.floor(Math.random() * 3)
       const elem = document.createElement('li')
       elem.classList.add('list-item', 'list-group-item')
       elem.innerHTML = `
-      ${sphere.uuid}
-      <button class="btn-delete">Delete</button>
+      <div id="id">${sphere.uuid}</div>
+      <button class="btn btn-delete">X</button>
       `
       list.append(elem)
-      //
+      const btnDelete = document.querySelectorAll('.btn-delete')
+
+      btnDelete.forEach((item, i) => {
+         item.addEventListener('click', () => {
+            item.parentNode.remove()
+
+            function removeEntity(objectName) {
+               var selectedObject = scene.getObjectByName(objectName)
+               scene.remove(selectedObject)
+               // animate()
+            }
+            removeEntity(i + 2)
+         })
+      })
+
       function animate() {
          requestAnimationFrame(animate)
          renderer.render(scene, camera)
