@@ -7,18 +7,18 @@ const global = {
   iForPositionZ: null,
   elapsedTime: null,
   scrollWhere: null,
-  thisPos: null
-  // canvas: document.querySelector("#scene"),
+  thisPos: null,
+  canvas: document.querySelector("#scene"),
 }
 
 // video
 
-// const video = document.querySelector('.video')
-// video.addEventListener('ended', () => {
-//   const videoBg = document.querySelector('#video-bg')
-//   videoBg.style.opacity = '0'
-//   video.style.opacity = '0'
-// })
+const video = document.querySelector('.video')
+video.addEventListener('ended', () => {
+  const videoBg = document.querySelector('#video-bg')
+  videoBg.style.opacity = '0'
+  video.style.opacity = '0'
+})
 
 function Tunnel(texture, font) {
   this.texture = texture
