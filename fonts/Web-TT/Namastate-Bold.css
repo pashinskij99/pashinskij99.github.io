@@ -1,0 +1,11 @@
+/* Webfont: Namastate-Bold */@font-face {
+    font-family: 'Namastate';
+    src: url('Namastate-Bold.eot'); /* IE9 Compat Modes */
+    src: url('Namastate-Bold.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('Namastate-Bold.woff') format('woff'), /* Modern Browsers */
+         url('Namastate-Bold.ttf') format('truetype'); /* Safari, Android, iOS */
+             font-style: normal;
+    font-weight: bold;
+    text-rendering: optimizeLegibility;
+}
+
