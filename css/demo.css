@@ -170,9 +170,13 @@ a:focus {
 }
 
 #scene.clickable{
+<<<<<<< HEAD
 	position: fixed;
 	cursor: pointer;
 	z-index: 1;
+=======
+	cursor: pointer;
+>>>>>>> 4430df5e5a9d2fb5e54380bed6dda1a98722a960
 }
 
 /* Demo themes */
@@ -207,6 +211,7 @@ a:focus {
 }
 
 .video {
+<<<<<<< HEAD
 	opacity: 1;
 	transition: all 1s ease-in;
 }
@@ -241,6 +246,12 @@ a:focus {
 		  height: 100%;
 		  object-fit: cover;
 	 }
+=======
+	position: relative;
+	z-index: 1;
+	width: 100%;
+	height: 100%;
+>>>>>>> 4430df5e5a9d2fb5e54380bed6dda1a98722a960
 }
 
 @media screen and (max-width: 60em) {
