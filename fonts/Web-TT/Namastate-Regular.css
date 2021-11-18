@@ -1,0 +1,11 @@
+/* Webfont: Namastate-Regular */@font-face {
+    font-family: 'Namastate';
+    src: url('Namastate-Regular.eot'); /* IE9 Compat Modes */
+    src: url('Namastate-Regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('Namastate-Regular.woff') format('woff'), /* Modern Browsers */
+         url('Namastate-Regular.ttf') format('truetype'); /* Safari, Android, iOS */
+             font-style: normal;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
