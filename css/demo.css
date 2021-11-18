@@ -170,13 +170,9 @@ a:focus {
 }
 
 #scene.clickable{
-<<<<<<< HEAD
 	position: fixed;
 	cursor: pointer;
 	z-index: 1;
-=======
-	cursor: pointer;
->>>>>>> 4430df5e5a9d2fb5e54380bed6dda1a98722a960
 }
 
 /* Demo themes */
