@@ -45,19 +45,23 @@ Tunnel.prototype.init = function() {
   this.camera.position.z = 0.221;
 
   this.scene = new THREE.Scene();
-  this.scene.fog = new THREE.Fog(0x000d25,0.05,1.6);
+  // this.scene.fog = new THREE.Fog("rgb(243, 240, 239)",0,1.);
 
-  var light = new THREE.HemisphereLight( 0xe9eff2, 0x01010f, 1 );
+  // var light = new THREE.HemisphereLight( 0xe9eff2, 0x01010f, 1 );
+  var light = new THREE.HemisphereLight( 0xffffff, 0xfffffff, 1 );
   this.scene.add( light );
+
 
   this.addParticle();
 };
 
 Tunnel.prototype.addParticle = function() {
+
+
   this.particles = [];
   this.texts = [];
   // fontLoader.load('./fonts/OpenType-TT/Namastate_Bold.json', (font) => {
-    for (var i = 0; i < 160; i++) {
+    for (var i = 0; i < 60; i++) {
       this.particles.push(new Particle(this.scene, false, 100, i));
       // this.texts.push(new Text(this.scene, true, 1000, global.fontLoader, "..."))
       global.iForPositionZ = i
@@ -85,14 +89,22 @@ Tunnel.prototype.createMesh = function() {
 
   this.tubeMaterial = new THREE.PointsMaterial({
     side: THREE.BackSide,
-    color:0xffffff,
+    color: "rgb(243, 240, 239)",
   });
 
-  this.tubeGeometry = new THREE.TubeGeometry(this.curve, 70, 0.02, 30, false);
+  this.tubeGeometry = new THREE.TubeGeometry(this.curve, 70, .007, 30, true);
   this.tubeGeometry_o = this.tubeGeometry.clone();
   this.tubeMesh = new THREE.Mesh(this.tubeGeometry, this.tubeMaterial);
 
   this.scene.add(this.tubeMesh);
+
+  this.geometry1 = new THREE.PlaneGeometry( 1, 1 );
+  this.material1 = new THREE.MeshBasicMaterial( {color: "rgb(243, 240, 239)", side: THREE.DoubleSide} );
+  this.plane = new THREE.Mesh( this.geometry1, this.material1 );
+  this.plane.position.set(0, 0, 0.9)
+  this.plane.scale.set(.03, .03, .03)
+  this.scene.add( this.plane );
+
 
 };
 
@@ -100,16 +112,16 @@ Tunnel.prototype.handleEvents = function() {
   window.addEventListener('resize', this.onResize.bind(this), false);
 
   document.body.addEventListener('mousemove', this.onMouseMove.bind(this), false);
-  document.body.addEventListener('touchmove', this.onMouseMove.bind(this), false);
+  // document.body.addEventListener('touchmove', this.onMouseMove.bind(this), false);
 
-  document.body.addEventListener('touchstart', this.onMouseDown.bind(this), false);
+  // document.body.addEventListener('touchstart', this.onMouseDown.bind(this), false);
   //mousedown
-  document.body.addEventListener('mousedown', this.onMouseDown.bind(this), true);
+  // document.body.addEventListener('mousedown', this.onMouseDown.bind(this), true);
 
-  document.body.addEventListener('mouseup', this.onMouseUp.bind(this), false);
-  document.body.addEventListener('mouseleave', this.onMouseUp.bind(this), false);
-  document.body.addEventListener('touchend', this.onMouseUp.bind(this), false);
-  window.addEventListener('mouseout', this.onMouseUp.bind(this), false);
+  // document.body.addEventListener('mouseup', this.onMouseUp.bind(this), false);
+  // document.body.addEventListener('mouseleave', this.onMouseUp.bind(this), false);
+  // document.body.addEventListener('touchend', this.onMouseUp.bind(this), false);
+  // window.addEventListener('mouseout', this.onMouseUp.bind(this), false);
 };
 
 Tunnel.prototype.onMouseDown = function() {
@@ -266,20 +278,21 @@ function Particle(scene, burst, time, i) {
   // this.percent = burst ? 1.2 : Math.random();
   // console.log(Math.random())
   const min = 0.7, max = 0.801
-  this.percent = burst ? .2 : i * .01; //  * (max - min) + min
+  this.percent = burst ? .2 : i * .06; //  * (max - min) + min
   this.burst = burst ? true : false;
   this.offset = new THREE.Vector3(0, 0, .2);
   this.speed = 0.0006;
   if (!this.burst){
     this.speed *= 1;
-    this.mesh.scale.x *= 5.4;
-    this.mesh.scale.y *= 5.4;
-    this.mesh.scale.z *= 5.4;
+    this.mesh.scale.x *= 6.4;
+    this.mesh.scale.y *= 6.4;
+    this.mesh.scale.z *= 6.4;
   }
     // this.rotate = new THREE.Vector3(-Math.random()*0.1+0.01,0,Math.random()*0.01);
 
   this.pos = new THREE.Vector3(0,0, global.iForPositionZ * 0.007)
   // this.pos = new THREE.Vector3(0, 0, 1)
+
   scene.add(this.mesh)
 }
 
@@ -325,6 +338,7 @@ Particle.prototype.update = function (tunnel) {
   global.elapsedTime = elapsedTime
   this.mesh.position.z = this.pos.z;
 
+  // this.percent += -this.speed * (this.burst ? 1 : tunnel.speed + 1)
   this.percent += this.speed * (this.burst ? 1 : tunnel.speed + 1)
   this.pos = tunnel.curve.getPoint(1 - (this.percent%1)).add(this.offset);
   this.mesh.position.x = this.pos.x;
@@ -335,6 +349,11 @@ Particle.prototype.update = function (tunnel) {
   // this.pos = tunnel.curve.getPoint(1 - (this.percent%1)).add(this.offset);
 
 };
+
+function addSphere(){
+
+}
+
 
 window.onload = function() {
   fontLoader.load('./fonts/OpenType-TT/Namastate_Bold.json', (font) => {
