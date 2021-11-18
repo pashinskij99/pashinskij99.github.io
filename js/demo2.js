@@ -5,7 +5,8 @@ var isMobile = ww < 500;
 const global = {
   myTime: 13000,
   iForPositionZ: null,
-  elapsedTime: null
+  elapsedTime: null,
+  scrollWhere: null
 }
 
 const textureLoader = new THREE.TextureLoader()
@@ -338,22 +339,19 @@ Particle.prototype.update = function (tunnel) {
   global.elapsedTime = elapsedTime
   this.mesh.position.z = this.pos.z;
 
-  // this.percent += -this.speed * (this.burst ? 1 : tunnel.speed + 1)
-  this.percent += this.speed * (this.burst ? 1 : tunnel.speed + 1)
+  if(global.scrollWhere === "down") {
+    this.percent += -this.speed * (this.burst ? 1 : tunnel.speed + 1)
+
+  } else {
+    this.percent += this.speed * (this.burst ? 1 : tunnel.speed + 1)
+  }
   this.pos = tunnel.curve.getPoint(1 - (this.percent%1)).add(this.offset);
   this.mesh.position.x = this.pos.x;
   this.mesh.position.y = this.pos.y;
   this.mesh.position.z = this.pos.z;
 
-  // this.mesh.position.z = this.pos.z - elapsedTime * Math.PI * 0.2
-  // this.pos = tunnel.curve.getPoint(1 - (this.percent%1)).add(this.offset);
 
 };
-
-function addSphere(){
-
-}
-
 
 window.onload = function() {
   fontLoader.load('./fonts/OpenType-TT/Namastate_Bold.json', (font) => {
@@ -362,5 +360,17 @@ window.onload = function() {
     window.tunnel = new Tunnel()
   })
 
-  window.addEventListener('mousewheel', () => window.tunnel.render())
+  window.addEventListener('mousewheel', (event) => {
+    if(event.deltaY > 0) {
+      // scrollDown
+      global.scrollWhere = 'down'
+      window.tunnel.render()
+    } else {
+      //scrollTop
+      global.scrollWhere = 'top'
+      window.tunnel.render()
+    }
+
+
+  })
 };
