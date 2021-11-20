@@ -5,12 +5,34 @@
 	box-sizing: border-box;
 }
 
+@font-face {
+	font-family: "Namastate-Bold";
+	src: url("../fonts/OpenType-TT/Namastate-Bold.ttf") format("truetype");
+	font-style: normal;
+	font-weight: normal;
+}
+
+@font-face{
+	font-family: "Namastate-Regular";
+	src: url("../fonts/OpenType-TT/Namastate-Regular.ttf") format("truetype");
+	font-style: normal;
+	font-weight: normal;
+}
+
+@font-face{
+	font-family: "Namastate-Light";
+	src: url("../fonts/OpenType-TT/Namastate-Light.ttf") format("truetype");
+	font-style: normal;
+	font-weight: normal;
+}
+
 body {
 	--text-color: #f0f0f0;
 	--background-color: #5f5c58;
 	--link-color: #e2bd7d;
 	--link-hover-color: #e2bd7d;
-	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+	/*font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;*/
+	font-family: "Namastate-Light";
 	color: #ddd;
 	color: var(--text-color);
 	background: #000;
@@ -169,6 +191,40 @@ a:focus {
 	padding: 0;
 }
 
+.modal {
+	position: fixed;
+	display: block;
+	top: 40%;
+	left: 0;
+	right: 0;
+	width: 450px;
+	height: 300px;
+	margin: 0 auto;
+	z-index: 3;
+	background: rgba(248, 245, 245, 0.86);
+	box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.38);
+	border-radius: 2%;
+}
+.modal h1 {
+	font-family: "Namastate-Bold";
+	font-size: 50px;
+	text-align: center;
+	color: #000;
+}
+.modal_close {
+	font-weight: 900;
+	color: #fff;
+	font-size: 15px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 30px;
+	height: 30px;
+	margin-left: auto;
+	background: #e92a0f;
+	cursor: pointer;
+}
+
 #scene.clickable{
 	position: fixed;
 	cursor: pointer;
@@ -183,33 +239,25 @@ a:focus {
 	--link-hover-color: #6a22ba;
 }
 
-.demo-3 {
-	--background-color: #381e6f;
-	--link-color: #d7b5fc;
-	--link-hover-color: #cbfaf2;
-}
-
-.demo-4 {
-	--background-color: #780f00;
-	--link-color: #e92a0f;
-	--link-hover-color: #fff;
-}
-
-.demo-5 {
-	--background-color: #52d9e0;
-	--link-color: #85fff0;
-	--link-hover-color: #4730b3;
-}
-
-.demo-6 {
-	--background-color: #342938;
-	--link-hover-color: #cb9edb;
-}
-
 .video {
-<<<<<<< HEAD
 	opacity: 1;
 	transition: all 1s ease-in;
+}
+
+.closeVideoBtn {
+	font-family: "Namastate-Regular";
+	font-size: 15px;
+	letter-spacing: 0.1rem;
+	position: absolute;
+	right: 5%;
+	top: 5%;
+	width: fit-content;
+	height: fit-content;
+	background: #fff;
+	border-radius: 10%;
+	z-index: 3;
+	cursor: pointer;
+	padding: 5px 10px;
 }
 
 #video-bg {
@@ -220,8 +268,6 @@ a:focus {
 	left: 0;
 	overflow: hidden;
 	z-index: 1;
-	background: url(bg/daisy-stock-poster.jpg) no-repeat #94a233;
-	background-size: cover;
 	opacity: 1;
 	transition: all 1s ease-in;
 }
@@ -242,12 +288,6 @@ a:focus {
 		  height: 100%;
 		  object-fit: cover;
 	 }
-=======
-	position: relative;
-	z-index: 1;
-	width: 100%;
-	height: 100%;
->>>>>>> 4430df5e5a9d2fb5e54380bed6dda1a98722a960
 }
 
 @media screen and (max-width: 60em) {
