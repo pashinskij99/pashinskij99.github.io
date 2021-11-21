@@ -192,6 +192,11 @@ a:focus {
 }
 
 .modal {
+	min-width: 100%;
+	min-height: 100vh;
+
+}
+.modal_container {
 	position: fixed;
 	display: block;
 	top: 40%;
@@ -227,7 +232,7 @@ a:focus {
 
 #scene.clickable{
 	position: fixed;
-	cursor: pointer;
+	cursor:auto;
 	z-index: 1;
 }
 
@@ -280,6 +285,11 @@ a:focus {
 	width: auto;
 	height: auto; 
 }
+
+.noPointer {
+	pointer-events: none;
+}
+
 @supports (object-fit: cover) {
 	 #video-bg > video {
 		  top: 0;
@@ -304,3 +314,5 @@ a:focus {
 		margin: 1em 0 0;
 	}
 }
+
+

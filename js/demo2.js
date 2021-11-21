@@ -1,5 +1,5 @@
 const global = {
-  myTime: 13000,
+  cameraPositionNow: null,
   iForPositionZ: null,
   elapsedTime: null,
   scrollWhere: null,
@@ -8,13 +8,13 @@ const global = {
   camera: null,
   checkModal: false,
   videoIsEnd: false,
+  takeCanvas: document.querySelector("#scene")
 }
 
-const videoBg = document.querySelector('#video-bg')
 const closeVideoBtn = document.getElementById("closeVideoBtn")
 closeVideoBtn.addEventListener("click", () => {
+  const videoBg = document.querySelector('#video-bg')
   global.videoIsEnd = true
-
   videoBg.style.opacity = '0'
   video.style.opacity = '0'
   closeVideoBtn.remove()
@@ -23,9 +23,9 @@ closeVideoBtn.addEventListener("click", () => {
   }, 1000)
 })
 const body = document.querySelector('body')
-// video
 const video = document.querySelector('.video')
 video.addEventListener('ended', () => {
+  const videoBg = document.querySelector('#video-bg')
   global.videoIsEnd = true
   closeVideoBtn.remove()
   videoBg.style.opacity = '0'
@@ -35,10 +35,6 @@ video.addEventListener('ended', () => {
   }, 1000)
 
 })
-
-if(global.videoIsEnd) {
-
-}
 
 var ww = window.innerWidth;
 var wh = window.innerHeight;
@@ -58,6 +54,7 @@ window.addEventListener("mousemove", (event) => {
 window.addEventListener('click', () => {
   if(currentIntersect) {
     global.checkModal = true
+    // global.takeCanvas.classList.add("noPointer")
     const element = document.createElement('div')
     element.classList.add("modal")
     element.innerHTML = `
@@ -90,7 +87,6 @@ function Tunnel(texture, font) {
 }
 
 Tunnel.prototype.init = function() {
-
   this.speed = 1;
   this.prevTime = 0;
 
@@ -110,6 +106,10 @@ Tunnel.prototype.init = function() {
   global.camera = this.camera
   this.camera.rotation.y = Math.PI;
   this.camera.position.z = 0.35;
+  if(global.cameraPositionNow) {
+    this.camera.position.set(global.cameraPositionNow)
+
+  }
 
   this.scene = new THREE.Scene();
   this.scene.fog = new THREE.Fog(0x000d25,0.05,1.6);
@@ -181,11 +181,13 @@ Tunnel.prototype.createMesh = function() {
 
 Tunnel.prototype.handleEvents = function() {
   window.addEventListener('resize', this.onResize.bind(this), false)
-
+  if(!global.checkModal) {
+    document.body.addEventListener('mousewheel', this.onMouseDown.bind(this), false); 
+  } else {
+    document.body.removeEventListener("mousewheel", this.onMouseDown.bind(this), false)
+  }
   document.body.addEventListener('mousemove', this.onMouseMove.bind(this), false);
-
-  document.body.addEventListener('touchstart', this.onMouseDown.bind(this), false);
-  document.body.addEventListener('mousewheel', this.onMouseDown.bind(this), false);
+  // document.body.addEventListener('touchstart', this.onMouseDown.bind(this), false);
 };
 
 Tunnel.prototype.onMouseDown = function() {
@@ -240,7 +242,6 @@ Tunnel.prototype.onMouseMove = function(e) {
 }
 
 Tunnel.prototype.updateCameraPosition = function() {
-
   this.mouse.position.x += (this.mouse.target.x - this.mouse.position.x) / 250;
   this.mouse.position.y += (this.mouse.target.y - this.mouse.position.y) / 250;
 
@@ -250,6 +251,7 @@ Tunnel.prototype.updateCameraPosition = function() {
   this.camera.rotation.y = Math.PI - (this.mouse.ratio.x * 0.1 - 0.05);
   this.camera.position.x = this.mouse.ratio.x * 0.008 - 0.004;
   this.camera.position.y = this.mouse.ratio.y * 0.008 - 0.004;
+  global.cameraPositionNow = this.camera.position
 }
 
 Tunnel.prototype.updateCurve = function() {
@@ -280,8 +282,9 @@ Tunnel.prototype.updateCurve = function() {
 }
 
 Tunnel.prototype.render = function(time) {
-
-  this.updateCameraPosition();
+  if(!global.checkModal) {
+    this.updateCameraPosition();
+  }
 
   this.updateCurve();
 
@@ -299,6 +302,8 @@ Tunnel.prototype.render = function(time) {
       ){
       this.particles.splice(i, 1)
       this.texts.splice(i, 1)
+      this.text.splice(i, 1)
+      this.b.splice(i, 1)
       i--
     }
   }
@@ -307,20 +312,20 @@ Tunnel.prototype.render = function(time) {
 
   if(global.iForPositionZ === 50) {
     raycaster.setFromCamera(mouse, global.camera)
-
     this.intersects = raycaster.intersectObjects(global.arrForTexts)
-
     for (const object of global.arrForTexts) {
       object.material.color.set("#fff")
       object.scale.set(0.006, 0.003, 0.0002)
-      // object.scale.set(0.005, 0.003, 0.002)
+      canvas = document.querySelector("#scene")
+      canvas.style.cursor = "auto"
     }
 
     for(const intersect of this.intersects) {
       currentName = intersect.object.name
       intersect.object.material.color.set("#000")
       intersect.object.scale.set(0.0065, 0.0035, 0.0002)
-      // intersect.object.scale.set(0.006, 0.004, 0.002)
+      canvas = document.querySelector("#scene")
+      canvas.style.cursor = "pointer"
     }
     if(this.intersects.length) {
       if(currentIntersect === null) {
@@ -377,47 +382,38 @@ function Text (scene, burst, time, i, text) {
   this.text = "hola"
   var x = window.innerWidth / 2 - 300;
   var y = window.innerHeight / 2 - 300;
-
   context.font = "70px Namastate-Light";
   context.textAlign = "center";
   context.fillRect(0, 0, 600, 600);
   context.fillStyle = "#fff";
   context.fillText(text[i], canvas.width / 2, canvas.height / 2);
-  
   var texture = new THREE.Texture(canvas);
   texture.needsUpdate = true;
-  
   const textGeometry = new THREE.PlaneBufferGeometry(0.5, 0.5)
-
   const textMaterial = new THREE.MeshBasicMaterial({
     alphaMap: texture,
     color: 0xffffff,
     side: THREE.FrontSide,
     transparent: true,
   })
-
   this.textMesh = new THREE.Mesh(textGeometry, textMaterial)
-  
   this.textMesh.name = text[i]
   this.textMesh.scale.set(0.00017, 0.00009, 0.0002)
   this.textMesh.rotation.y = Math.PI
-
   if (!this.burst){
     this.speed = 0;
     this.textMesh.scale.x *= 20.6;
     this.textMesh.scale.y *= 20.6;
     this.textMesh.scale.z *= 1.4;
   }
-
   global.arrForTexts.push(this.textMesh)
-
   scene.add(this.textMesh)
 }
 
 Particle.prototype.plane = new THREE.PlaneBufferGeometry( 1, 1 );
 Particle.prototype.update = function (tunnel) {
   if(global.scrollWhere === "down") {
-    body.style.cursor = 'url("]"), default'
+    // body.style.cursor = 'url("]"), default'
     this.percent -= (this.speed - 1 * 2  ) * (this.burst ? 1 : tunnel.speed + 1)
   } else {
     this.percent += this.speed * (this.burst ? 1 : tunnel.speed + 1)
@@ -430,7 +426,6 @@ Particle.prototype.update = function (tunnel) {
 }
 const document1 = document.querySelector('.content')
 Text.prototype.update = function (tunnel) {
-
   this.textMesh.position.x = global.thisPos.x;
   this.textMesh.position.y = global.thisPos.y + 0.0101;
   this.textMesh.position.z = global.thisPos.z;
@@ -438,8 +433,6 @@ Text.prototype.update = function (tunnel) {
 window.onload = function() {
   const textureLoader = new THREE.TextureLoader()
   textureLoader.load('/img/texture/Chunnel_All-7.png', (texture) => {
-    // texture.width = 2048
-    // texture.height = 2048
     window.tunnel = new Tunnel(texture)
   })
 }
