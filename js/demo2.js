@@ -10,7 +10,8 @@ const global = {
   videoIsEnd: false,
   takeCanvas: document.querySelector("#scene"),
   stopped: false,
-  positionForTextOnTexture: null
+  positionForTextOnTexture: null,
+  leaveFromWindow: false
 }
 
 const closeVideoBtn = document.getElementById("closeVideoBtn")
@@ -55,7 +56,7 @@ window.addEventListener("mousemove", (event) => {
 
 window.addEventListener('click', () => {
   if(currentIntersect) {
-    if(!global.checkModal) {
+    if(!global.checkModal && global.videoIsEnd) {
       global.checkModal = true
       // global.takeCanvas.classList.add("noPointer")
       const element = document.createElement('div')
@@ -156,8 +157,7 @@ Tunnel.prototype.addParticle = function() {
   this.p7 = [0.0045, -0.01586, 0, -0.7]
   this.p8 = [0.0079, -0.01, 0, -1.5]
 
-
-  for (var i = 0; i <= 51; i++) {
+  for (var i = 0; i <= 49; i++) {
     global.iForPositionZ = i
     this.positionForText.push(this.p3, this.p1, this.p2, this.p3, this.p4, this.p6, this.p7, this.p8 )
     // this.p7)
@@ -205,6 +205,13 @@ Tunnel.prototype.handleEvents = function() {
   window.addEventListener('resize', this.onResize.bind(this), false)
   document.body.addEventListener('mousewheel', this.onMouseDown.bind(this), false);
   document.body.addEventListener('mousemove', this.onMouseMove.bind(this), false);
+  // window.addEventListener('mouseout', this.onMouseUp.bind(this), false);
+  document.body.addEventListener('mouseleave', (event) => {
+    global.leaveFromWindow = true
+  }, false);
+  window.addEventListener('mouseover', () => {
+    global.leaveFromWindow = false
+  })
   // document.body.addEventListener('touchstart', this.onMouseDown.bind(this), false);
 };
 
@@ -241,6 +248,23 @@ Tunnel.prototype.onMouseDown = function() {
     }, 200)
   }
 }
+// Tunnel.prototype.onMouseUp = function() {
+//   this.mousedown = false;
+//   TweenMax.to(this.scene.fog.color, 0.6, {
+//     r:0,
+//     g:0.050980392156862744,
+//     b :0.1450980392156863
+//   });
+//   TweenMax.to(this.tubeMaterial.color, 0.6, {
+//     r:1,
+//     g:1,
+//     b:1
+//   });
+//   TweenMax.to(this, 0.6, {
+//     speed: 1,
+//     ease: Power2.easeIn
+//   });
+// };
 
 Tunnel.prototype.onResize = function() {
   ww = window.innerWidth;
@@ -304,7 +328,7 @@ Tunnel.prototype.updateCurve = function() {
 }
 
 Tunnel.prototype.render = function(time) {
-  if(!global.checkModal) {
+  if(!global.checkModal && global.videoIsEnd && !global.leaveFromWindow) {
     this.updateCameraPosition();
   }
 
@@ -332,45 +356,43 @@ Tunnel.prototype.render = function(time) {
 
   this.renderer.render(this.scene, this.camera);
 
-  if(global.iForPositionZ === 51) {
-      raycaster.setFromCamera(mouse, global.camera)
-      this.intersects = raycaster.intersectObjects(global.arrForTexts)
-      for (const object of global.arrForTexts) {
-        if(!global.checkModal) {
-          object.material.color.set("#42434A")
-          object.scale.set(0.006, 0.003, 0.0002)
-          global.takeCanvas = document.querySelector("#scene")
-          if(global.scrollWhere === 'down' || global.scrollWhere === 'top') {
-            global.takeCanvas.style.cursor = "url('/img/cursor/cursor-prob.svg'), pointer" +
-                " "
-          } else {
-            global.takeCanvas.style.cursor = "auto"
-          }
+    raycaster.setFromCamera(mouse, global.camera)
+    this.intersects = raycaster.intersectObjects(global.arrForTexts)
+    for (const object of global.arrForTexts) {
+      if(!global.checkModal) {
+        object.material.color.set("#42434A")
+        object.scale.set(0.006, 0.003, 0.0002)
+        // global.takeCanvas = document.querySelector("#scene")
+        if(global.scrollWhere === 'down' || global.scrollWhere === 'top') {
+          global.takeCanvas.style.cursor = "url('/img/cursor/cursor-prob.svg'), pointer" +
+              " "
         } else {
           global.takeCanvas.style.cursor = "auto"
         }
-      }
-
-      for(const intersect of this.intersects) {
-        if(!global.checkModal) {
-          currentName = intersect.object.name
-          intersect.object.material.color.set("#F3F0EF")
-          intersect.object.scale.set(0.0065, 0.0035, 0.0002)
-          global.takeCanvas = document.querySelector("#scene")
-          global.takeCanvas.style.cursor = "url('/img/cursor/Hand-Shaped-Mouse-Icon-Vector.svg'), pointer"
-        }
-      }
-      if(this.intersects.length) {
-        if(currentIntersect === null) {
-        }
-        currentIntersect = this.intersects[0]
       } else {
-        if(currentIntersect) {
-        }
-        currentIntersect = null
+        global.takeCanvas.style.cursor = "auto"
       }
+    }
 
-  }
+    for(const intersect of this.intersects) {
+      if(!global.checkModal) {
+        currentName = intersect.object.name
+        intersect.object.material.color.set("#F3F0EF")
+        intersect.object.scale.set(0.0065, 0.004, 0.0002)
+        // global.takeCanvas = document.querySelector("#scene")
+        global.takeCanvas.style.cursor = "url('/img/cursor/Hand-Shaped-Mouse-Icon-Vector.svg'), pointer"
+      }
+    }
+    if(this.intersects.length) {
+      if(currentIntersect === null) {
+      }
+      currentIntersect = this.intersects[0]
+    } else {
+      if(currentIntersect) {
+      }
+      currentIntersect = null
+    }
+
     window.requestAnimationFrame(this.render.bind(this));
 }
 
