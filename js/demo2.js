@@ -8,7 +8,9 @@ const global = {
   camera: null,
   checkModal: false,
   videoIsEnd: false,
-  takeCanvas: document.querySelector("#scene")
+  takeCanvas: document.querySelector("#scene"),
+  stopped: false,
+  positionForTextOnTexture: null
 }
 
 const closeVideoBtn = document.getElementById("closeVideoBtn")
@@ -57,10 +59,14 @@ window.addEventListener('click', () => {
       global.checkModal = true
       // global.takeCanvas.classList.add("noPointer")
       const element = document.createElement('div')
-      element.classList.add("modal")
+      element.classList.add("modal", "noselect")
       element.innerHTML = `
       <div class="modal_container">
-        <div class="modal_close">X</div>
+        <div class="modal_close">
+          <div class="modal_close_item">
+           X
+          </div> 
+        </div>
         <h1 class="modal_title">
             ${currentName}
         </h1>
@@ -110,7 +116,6 @@ Tunnel.prototype.init = function() {
   this.camera.position.z = 0.35;
   if(global.cameraPositionNow) {
     this.camera.position.set(global.cameraPositionNow)
-
   }
 
   this.scene = new THREE.Scene();
@@ -140,14 +145,29 @@ Tunnel.prototype.addParticle = function() {
   this.fiveText = ["ALL GOODS"]
   this.sixText = ['COMMUNITAS']
   this.sevenText = ['CONNECT']
+  // this.positionForText = []
+  // this.firstPosition = [0.003, 0, 0]
+  this.positionForText = []
+  this.p1 = [0.0045, -0.01586, 0, -0.7]
+  this.p2 = [-0.01023, -0.005, 0, -1.6]
+  this.p3 = [-0.008, -0.00065, 0,-0.16]
+  this.p4 = [0.008, -0.0011, 0, 0.28]
+  this.p6 = [-0.00695, -0.013, 0, 0.85]
+  this.p7 = [0.0045, -0.01586, 0, -0.7]
+  this.p8 = [0.0079, -0.01, 0, -1.5]
 
-  for (var i = 0; i <= 50; i++) {
+
+  for (var i = 0; i <= 51; i++) {
     global.iForPositionZ = i
+    this.positionForText.push(this.p3, this.p1, this.p2, this.p3, this.p4, this.p6, this.p7, this.p8 )
+    // this.p7)
+        // this.p8, this.p9, this.p10, this.p11 )
     this.text.push(this.firText,this.secText,this.thirText,this.fourText,this.fiveText, this.sixText,this.sevenText)
     this.b.push(this.fir, this.sec, this.thir, this.four, this.five, this.six)
     this.particles.push(new Particle(this.scene, false, 100, i, this.texture, this.b))
-    this.texts.push(new Text(this.scene, true, 1000, i, this.text))
+    this.texts.push(new Text(this.scene, true, 1000, i, this.text, this.positionForText))
   }
+  // console.log(this.positionForText)
 };
 
 Tunnel.prototype.createMesh = function() {
@@ -196,11 +216,14 @@ Tunnel.prototype.onMouseDown = function() {
       speed: 1550,
       ease: Power2.easeInOut
     })
+    // document.body.style.cursor = "url(../img/cursor/scroll-cursor.png)"
     setTimeout(() => {
       TweenMax.to(this, 0, {
         speed: 0,
         ease: Power2.easeInOut
       })
+      global.scrollWhere = null
+
     }, 200)
   } else {
     //scrollTop
@@ -214,6 +237,7 @@ Tunnel.prototype.onMouseDown = function() {
         speed: 0,
         ease: Power2.easeInOut
       })
+      global.scrollWhere = null
     }, 200)
   }
 }
@@ -240,15 +264,15 @@ Tunnel.prototype.onMouseMove = function(e) {
 }
 
 Tunnel.prototype.updateCameraPosition = function() {
-  this.mouse.position.x += (this.mouse.target.x - this.mouse.position.x) / 250;
-  this.mouse.position.y += (this.mouse.target.y - this.mouse.position.y) / 250;
+  this.mouse.position.x += (this.mouse.target.x - this.mouse.position.x) / 650;
+  this.mouse.position.y += (this.mouse.target.y - this.mouse.position.y) / 650;
 
   this.mouse.ratio.x = (this.mouse.position.x / ww);
   this.mouse.ratio.y = (this.mouse.position.y / wh);
 
   this.camera.rotation.y = Math.PI - (this.mouse.ratio.x * 0.1 - 0.05);
-  this.camera.position.x = this.mouse.ratio.x * 0.008 - 0.004;
-  this.camera.position.y = this.mouse.ratio.y * 0.008 - 0.004;
+  this.camera.position.x = this.mouse.ratio.x * 0.000000008 - 0.000000004;
+  this.camera.position.y = this.mouse.ratio.y * 0.0008 - 0.0004;
   global.cameraPositionNow = this.camera.position
 }
 
@@ -308,28 +332,32 @@ Tunnel.prototype.render = function(time) {
 
   this.renderer.render(this.scene, this.camera);
 
-  if(global.iForPositionZ === 50) {
+  if(global.iForPositionZ === 51) {
       raycaster.setFromCamera(mouse, global.camera)
       this.intersects = raycaster.intersectObjects(global.arrForTexts)
       for (const object of global.arrForTexts) {
         if(!global.checkModal) {
-          object.material.color.set("#fff")
+          object.material.color.set("#42434A")
           object.scale.set(0.006, 0.003, 0.0002)
-          canvas = document.querySelector("#scene")
-          canvas.style.cursor = "auto"
+          global.takeCanvas = document.querySelector("#scene")
+          if(global.scrollWhere === 'down' || global.scrollWhere === 'top') {
+            global.takeCanvas.style.cursor = "url('/img/cursor/cursor-prob.svg'), pointer" +
+                " "
+          } else {
+            global.takeCanvas.style.cursor = "auto"
+          }
         } else {
-          canvas.style.cursor = "auto"
-
+          global.takeCanvas.style.cursor = "auto"
         }
       }
 
       for(const intersect of this.intersects) {
         if(!global.checkModal) {
           currentName = intersect.object.name
-          intersect.object.material.color.set("#000")
+          intersect.object.material.color.set("#F3F0EF")
           intersect.object.scale.set(0.0065, 0.0035, 0.0002)
-          canvas = document.querySelector("#scene")
-          canvas.style.cursor = "pointer"
+          global.takeCanvas = document.querySelector("#scene")
+          global.takeCanvas.style.cursor = "url('/img/cursor/Hand-Shaped-Mouse-Icon-Vector.svg'), pointer"
         }
       }
       if(this.intersects.length) {
@@ -347,10 +375,10 @@ Tunnel.prototype.render = function(time) {
 }
 
 function Particle(scene, burst, time, i, texture, color) {
-  const myTime = global.myTime
-  const radius = .0008;
-  let geom // = this.icosahedron;
-  const random = true;
+  // const myTime = global.myTime
+  const radius = .0008
+  let geom
+  const random = true
   if(random){
     geom = this.plane
   }
@@ -361,6 +389,7 @@ function Particle(scene, burst, time, i, texture, color) {
     transparent: true,
     depthWrite: false,
   });
+
   this.mesh = new THREE.Mesh(geom, mat);
   this.mesh.scale.set(radius, radius, radius);
   this.mesh.position.set(0, 0, 1.5);
@@ -379,15 +408,16 @@ function Particle(scene, burst, time, i, texture, color) {
   scene.add(this.mesh)
 }
 
-function Text (scene, burst, time, i, text) {
+function Text (scene, burst, time, i, text, newPosition) {
+  this.i = i
+  // this.textNewPosition = newPosition
   var canvas = document.createElement("canvas");
   canvas.width = 512;
   canvas.height = 256;
   var context = canvas.getContext("2d");
-  this.text = "hola"
   var x = window.innerWidth / 2 - 300;
   var y = window.innerHeight / 2 - 300;
-  context.font = "70px Namastate-Regular";
+  context.font = "70px Namastate-Regular"
   context.textAlign = "center";
   context.fillRect(0, 0, 600, 600);
   context.fillStyle = "#fff";
@@ -400,6 +430,7 @@ function Text (scene, burst, time, i, text) {
     color: 0xffffff,
     side: THREE.FrontSide,
     transparent: true,
+    opacity: 1.4
   })
   this.textMesh = new THREE.Mesh(textGeometry, textMaterial)
   this.textMesh.name = text[i]
@@ -413,13 +444,15 @@ function Text (scene, burst, time, i, text) {
   }
   global.arrForTexts.push(this.textMesh)
   scene.add(this.textMesh)
+
+  this.positionForText = newPosition
+
 }
 
 Particle.prototype.plane = new THREE.PlaneBufferGeometry( 1, 1 );
 Particle.prototype.update = function (tunnel) {
   if(!global.checkModal) {
     if(global.scrollWhere === "down") {
-      // body.style.cursor = 'url("]"), default'
       this.percent -= (this.speed - 1 * 2  ) * (this.burst ? 1 : tunnel.speed + 1)
     } else {
       this.percent += this.speed * (this.burst ? 1 : tunnel.speed + 1)
@@ -434,9 +467,12 @@ Particle.prototype.update = function (tunnel) {
 }
 const document1 = document.querySelector('.content')
 Text.prototype.update = function (tunnel) {
-  this.textMesh.position.x = global.thisPos.x;
-  this.textMesh.position.y = global.thisPos.y + 0.0101;
-  this.textMesh.position.z = global.thisPos.z;
+  this.textMesh.position.x = global.thisPos.x + this.positionForText[this.i][0]
+  this.textMesh.position.y = global.thisPos.y + 0.0101 + this.positionForText[this.i][1] // +
+      // this.textNewPosition[1];
+  this.textMesh.position.z = global.thisPos.z - 0.0005;
+  this.textMesh.rotation.z = 0 + this.positionForText[this.i][3]
+  // console.log(this.positionForText[this.i][0])
 }
 window.onload = function() {
   const textureLoader = new THREE.TextureLoader()
