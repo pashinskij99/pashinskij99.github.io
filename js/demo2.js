@@ -378,7 +378,7 @@ Tunnel.prototype.render = function(time) {
       if(!global.checkModal) {
         currentName = intersect.object.name
         intersect.object.material.color.set("#F3F0EF")
-        intersect.object.scale.set(0.0065, 0.004, 0.0002)
+        intersect.object.scale.set(0.007, 0.004, 0.0002)
         // global.takeCanvas = document.querySelector("#scene")
         global.takeCanvas.style.cursor = "url('/img/cursor/Hand-Shaped-Mouse-Icon-Vector.svg'), pointer"
       }
