@@ -29,7 +29,7 @@
 <!--					<a class="codrops-icon codrops-icon&#45;&#45;prev" href="https://tympanus.net/Development/ScrollSpiral/" title="Previous Demo"><svg class="icon icon&#45;&#45;arrow"><use xlink:href="#icon-arrow"></use></svg></a>-->
 <!--					<a class="codrops-icon codrops-icon&#45;&#45;drop" href="https://tympanus.net/codrops/?p=30954" title="Back to the article"><svg class="icon icon&#45;&#45;drop"><use xlink:href="#icon-drop"></use></svg></a>-->
 <!--				</div>-->
-				<h1 class="codrops-header__title">Infinite Tubes</h1>
+<!--				<h1 class="codrops-header__title">Infinite Tubes</h1>-->
 <!--				<nav class="demos">-->
 <!--					<a class="demo" href="index.html">Brick Tunnel</a>-->
 <!--					<a class="demo demo&#45;&#45;current" href="index2.html">Particles</a>-->
@@ -44,9 +44,15 @@
 			<div class="content">
 				<!-- The canvas where ThreeJs renders the WebGL -->
 				<canvas id="scene" class="clickable"></canvas>
-				<div class="video">
-					sadasdsasad
-				</div>
+				<div id="video-bg">
+					<div id="closeVideoBtn" class="closeVideoBtn">
+						Skip video
+					</div>
+					<video muted autoplay class="video" width="100%" height="100vh" preload="metadata" >
+						<source src="./video/video.mp4" type="video/mp4"></source>
+						<source src="./video/video-conv.webm" type="video/webm"></source>
+					</video>
+			  	</div>
 			</div>
 		</main>
 		<script src="js/vendors/three.min.js"></script>
