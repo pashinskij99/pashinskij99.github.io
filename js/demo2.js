@@ -362,7 +362,6 @@ Tunnel.prototype.render = function(time) {
       if(!global.checkModal) {
         object.material.color.set("#42434A")
         object.scale.set(0.006, 0.003, 0.0002)
-        // global.takeCanvas = document.querySelector("#scene")
         if(global.scrollWhere === 'down' || global.scrollWhere === 'top') {
           global.takeCanvas.style.cursor = "url('/img/cursor/cursor-prob.svg'), pointer" +
               " "
@@ -378,8 +377,7 @@ Tunnel.prototype.render = function(time) {
       if(!global.checkModal) {
         currentName = intersect.object.name
         intersect.object.material.color.set("#F3F0EF")
-        intersect.object.scale.set(0.007, 0.004, 0.0002)
-        // global.takeCanvas = document.querySelector("#scene")
+        intersect.object.scale.set(0.0075, 0.004, 0.0002)
         global.takeCanvas.style.cursor = "url('/img/cursor/Hand-Shaped-Mouse-Icon-Vector.svg'), pointer"
       }
     }
