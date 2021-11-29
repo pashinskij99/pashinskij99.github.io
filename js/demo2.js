@@ -329,13 +329,13 @@ Tunnel.prototype.init = function() {
   this.camera = new THREE.PerspectiveCamera(15, ww / wh, 0.01, 1000)
   global.camera = this.camera
   this.camera.rotation.y = Math.PI
-  this.camera.position.z = 0.6 // 0.25
+  this.camera.position.z = 0.25 // 0.25
   if(global.cameraPositionNow) {
     this.camera.position.set(global.cameraPositionNow)
   }
 
   this.scene = new THREE.Scene()
-  this.scene.fog = new THREE.Fog(0x000d25,0.05,3.6)
+  this.scene.fog = new THREE.Fog(0x000d25, 0.05, 3.6)
 
   var light = new THREE.HemisphereLight( 0xffffff, 0xfffffff, 1 )
   this.scene.add( light )
@@ -415,7 +415,7 @@ Tunnel.prototype.createMesh = function() {
   this.tubeGeometry = new THREE.TubeGeometry(this.curve, 70, 0.02, 30, false)
   this.tubeGeometry_o = this.tubeGeometry.clone()
   this.tubeMesh = new THREE.Mesh(this.tubeGeometry, this.tubeMaterial);
-  this.tubeMesh.scale.set(0.81,0.81,1)
+  this.tubeMesh.scale.set(0.81,0.68,1)
   this.tubeMesh.position.set(0, 0, 0)
   this.scene.add(this.tubeMesh);
 };
@@ -495,8 +495,8 @@ Tunnel.prototype.onMouseMove = function(e) {
 }
 
 Tunnel.prototype.updateCameraPosition = function() {
-  this.mouse.position.x += (this.mouse.target.x - this.mouse.position.x) / 120;
-  this.mouse.position.y += (this.mouse.target.y - this.mouse.position.y) / 120;
+  this.mouse.position.x += (this.mouse.target.x - this.mouse.position.x) / 30;
+  this.mouse.position.y += (this.mouse.target.y - this.mouse.position.y) / 30;
 
   this.mouse.ratio.x = (this.mouse.position.x / ww);
   this.mouse.ratio.y = (this.mouse.position.y / wh);
@@ -521,14 +521,14 @@ Tunnel.prototype.updateCurve = function() {
   }
   this.tubeGeometry.verticesNeedUpdate = true;
 
-  this.curve.points[1].x = -(0.6 * (1 - this.mouse.ratio.x) - 0.3) /15;
-  this.curve.points[2].x = (0.6 * (1 - this.mouse.ratio.x) - 0.3) / 4;
+  this.curve.points[1].x = -(0.6 * (1 - this.mouse.ratio.x) - 0.3) / 90;
+  this.curve.points[2].x = (0.6 * (1 - this.mouse.ratio.x) - 0.3) / 8;
   this.curve.points[3].x = 0;
-  this.curve.points[4].x = -(0.6 * (1 - this.mouse.ratio.x) - 0.3) / 4;
-  this.curve.points[1].y = -(0.6 * (1 - this.mouse.ratio.y) - 0.3) / 15;
-  this.curve.points[2].y = (0.6 * (1 - this.mouse.ratio.y) - 0.3) / 4;
-  this.curve.points[3].y = -0.015;
-  this.curve.points[4].y = -(0.6 * (1 - this.mouse.ratio.y) - 0.3) / 4 ;
+  this.curve.points[4].x = -(0.6 * (1 - this.mouse.ratio.x) - 0.3) / 8;
+  this.curve.points[1].y = -(0.6 * (1 - this.mouse.ratio.y) - 0.3) / 90;
+  this.curve.points[2].y = (0.6 * (1 - this.mouse.ratio.y) - 0.3) / 8
+  this.curve.points[3].y = -0.02;
+  this.curve.points[4].y = (0.6 * (1 - this.mouse.ratio.y) - 0.3) / 8 ;
 
   this.splineMesh.geometry.verticesNeedUpdate = true;
   this.splineMesh.geometry.vertices = this.curve.getPoints(70);
@@ -933,8 +933,8 @@ ModalTunnel.prototype.onMouseMove = function(e) {
 }
 
 ModalTunnel.prototype.updateCameraPosition = function() {
-  this.mouse.position.x += (this.mouse.target.x - this.mouse.position.x) / 120;
-  this.mouse.position.y += (this.mouse.target.y - this.mouse.position.y) / 120;
+  this.mouse.position.x += (this.mouse.target.x - this.mouse.position.x) / 30;
+  this.mouse.position.y += (this.mouse.target.y - this.mouse.position.y) / 30;
 
   this.mouse.ratio.x = (this.mouse.position.x / ww);
   this.mouse.ratio.y = (this.mouse.position.y / wh);
@@ -953,20 +953,20 @@ ModalTunnel.prototype.updateCurve = function() {
   for (i = 0; i < this.tubeGeometry.vertices.length; i += 1) {
     vertice_o = this.tubeGeometry_o.vertices[i];
     vertice = this.tubeGeometry.vertices[i];
-    index = Math.floor(i /30);
+    index = Math.floor(i / 30);
     vertice.x += ((vertice_o.x + this.splineMesh.geometry.vertices[index].x) - vertice.x) / 1;
     vertice.y += ((vertice_o.y + this.splineMesh.geometry.vertices[index].y) - vertice.y) / 1;
   }
   this.tubeGeometry.verticesNeedUpdate = true;
 
-  this.curve.points[1].x = -(0.6 * (1 - this.mouse.ratio.x) - 0.3) / 55;
-  this.curve.points[2].x = (0.6 * (1 - this.mouse.ratio.x) - 0.3) / 5;
+  this.curve.points[1].x = -(0.6 * (1 - this.mouse.ratio.x) - 0.3) / 90;
+  this.curve.points[2].x = (0.6 * (1 - this.mouse.ratio.x) - 0.3) / 8;
   this.curve.points[3].x = 0;
-  this.curve.points[4].x = -(0.6 * (1 - this.mouse.ratio.x) - 0.3) / 5;
-  this.curve.points[1].y = -(0.6 * (1 - this.mouse.ratio.y) - 0.3) / 55;
-  this.curve.points[2].y = (0.6 * (1 - this.mouse.ratio.y) - 0.3) / 5;
-  this.curve.points[3].y = -0.015;
-  this.curve.points[4].y = -(0.6 * (1 - this.mouse.ratio.y) - 0.3) / 5 ;
+  this.curve.points[4].x = -(0.6 * (1 - this.mouse.ratio.x) - 0.3) / 8;
+  this.curve.points[1].y = -(0.6 * (1 - this.mouse.ratio.y) - 0.3) / 90;
+  this.curve.points[2].y = (0.6 * (1 - this.mouse.ratio.y) - 0.3) / 8
+  this.curve.points[3].y = -0.02;
+  this.curve.points[4].y = (0.6 * (1 - this.mouse.ratio.y) - 0.3) / 8 ;
 
   this.splineMesh.geometry.verticesNeedUpdate = true;
   this.splineMesh.geometry.vertices = this.curve.getPoints(70);
