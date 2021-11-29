@@ -300,7 +300,6 @@ a:focus {
 	/*cursor: pointer;*/
 	padding: 5px 10px;
 	cursor: url('/img/cursor/Hand-Shaped-Mouse-Icon-Vector.svg'), pointer;
-
 }
 
 #video-bg {
@@ -448,7 +447,7 @@ a:focus {
 
 .modal-canvas-block {
 	position: fixed;
-	/*display: none;*/
+	/*opacity: 0;*/
 	top: 10%;
 	right: 0;
 	left: 0;
@@ -488,11 +487,9 @@ a:focus {
 }
 
 .prob_canvas {
-	/*display: none;*/
 	position: relative;
 	width: 100%;
 	height: 100%;
-	/*background: #000;*/
 	z-index: 4;
 }
 
@@ -500,7 +497,6 @@ a:focus {
 	position: relative;
 	width: 100%;
 	height: 100%;
-	/*background: #dddddd;*/
 	border-radius: 15px;
 }
 
@@ -508,7 +504,6 @@ a:focus {
 	position: relative;
 	width: 100%;
 	height: 100%;
-	/*background: #000;*/
 	z-index: -1;
 }
 
@@ -568,6 +563,13 @@ a:focus {
 }
 .hide {
 	display: none !important;
+}
+
+.opacity-on {
+	opacity: 0;
+}
+.opacity-off {
+	opacity: 1;
 }
 
 @media screen and (max-width: 60em) {

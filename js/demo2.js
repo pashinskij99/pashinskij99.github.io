@@ -178,6 +178,8 @@ btnMusic.addEventListener("click", () => {
 const closeVideoBtn = document.getElementById("closeVideoBtn")
 closeVideoBtn.addEventListener("click", () => {
   const videoBg = document.querySelector('#video-bg')
+  // const fakeModal = document.querySelector(".modal-canvas-block")
+  // fakeModal.classList.add("opacity-off")// .opacity-on
   global.videoIsEnd = true
   videoBg.style.opacity = '0'
   video.style.opacity = '0'
@@ -324,10 +326,10 @@ Tunnel.prototype.init = function() {
   });
   this.renderer.setSize(ww, wh)
 
-  this.camera = new THREE.PerspectiveCamera(15, ww / wh, 0.01, 100)
+  this.camera = new THREE.PerspectiveCamera(15, ww / wh, 0.01, 1000)
   global.camera = this.camera
   this.camera.rotation.y = Math.PI
-  this.camera.position.z = 0.25
+  this.camera.position.z = 0.6 // 0.25
   if(global.cameraPositionNow) {
     this.camera.position.set(global.cameraPositionNow)
   }
@@ -431,36 +433,41 @@ Tunnel.prototype.handleEvents = function() {
   })
   // document.body.addEventListener('touchstart', this.onMouseDown.bind(this), false);
 };
+let num1 = 100
 
 Tunnel.prototype.onMouseDown = function() {
+
   if(event.deltaY > 0) {
+    num1 += event.deltaY * 4.5
     // scrollDown
     global.scrollWhere = 'down'
     TweenMax.to(this, 0, {
-      speed: 1550,
-      ease: Power2.easeInOut
+      speed: 550 + num1, //1550 //1050
+      ease: "slow(0.7, 2, false)"  //  Power1.easeInOut
     })
     // document.body.style.cursor = "url(../img/cursor/scroll-cursor.png)"
     setTimeout(() => {
       TweenMax.to(this, 0, {
         speed: 0,
-        ease: Power2.easeInOut
+        ease: "slow(0.7, 2, false)" // Power1.easeInOut
       })
       global.scrollWhere = null
-
+      num1 = 100
     }, 200)
-  } else {
+  } else  {
     //scrollTop
     global.scrollWhere = 'top'
+    num1 += event.deltaY * 4.5
     TweenMax.to(this, 0, {
-      speed: 1550,
-      ease: Power2.easeInOut
+      speed: 550 - num1, // 1550
+      ease: "slow(0.7, 2, false)" // Power1.easeInOut // Power2.easeInOut
     })
     setTimeout(() => {
       TweenMax.to(this, 0, {
         speed: 0,
-        ease: Power2.easeInOut
+        ease: "slow(0.7, 2, false)" // Power1.easeInOut
       })
+      num1 = 100
       global.scrollWhere = null
     }, 200)
   }
@@ -488,8 +495,8 @@ Tunnel.prototype.onMouseMove = function(e) {
 }
 
 Tunnel.prototype.updateCameraPosition = function() {
-  this.mouse.position.x += (this.mouse.target.x - this.mouse.position.x) / 250;
-  this.mouse.position.y += (this.mouse.target.y - this.mouse.position.y) / 250;
+  this.mouse.position.x += (this.mouse.target.x - this.mouse.position.x) / 120;
+  this.mouse.position.y += (this.mouse.target.y - this.mouse.position.y) / 120;
 
   this.mouse.ratio.x = (this.mouse.position.x / ww);
   this.mouse.ratio.y = (this.mouse.position.y / wh);
@@ -508,20 +515,20 @@ Tunnel.prototype.updateCurve = function() {
   for (i = 0; i < this.tubeGeometry.vertices.length; i += 1) {
     vertice_o = this.tubeGeometry_o.vertices[i];
     vertice = this.tubeGeometry.vertices[i];
-    index = Math.floor(i /30);
-    vertice.x += ((vertice_o.x + this.splineMesh.geometry.vertices[index].x) - vertice.x) / 5;
-    vertice.y += ((vertice_o.y + this.splineMesh.geometry.vertices[index].y) - vertice.y) / 5;
+    index = Math.floor(i / 30);
+    vertice.x += ((vertice_o.x + this.splineMesh.geometry.vertices[index].x) - vertice.x) / 1;
+    vertice.y += ((vertice_o.y + this.splineMesh.geometry.vertices[index].y) - vertice.y) / 1;
   }
   this.tubeGeometry.verticesNeedUpdate = true;
 
-  this.curve.points[1].x = -(0.6 * (1 - this.mouse.ratio.x) - 0.3) / 15;
-  this.curve.points[2].x = (0.6 * (1 - this.mouse.ratio.x) - 0.3) / 115;
+  this.curve.points[1].x = -(0.6 * (1 - this.mouse.ratio.x) - 0.3) /15;
+  this.curve.points[2].x = (0.6 * (1 - this.mouse.ratio.x) - 0.3) / 4;
   this.curve.points[3].x = 0;
-  this.curve.points[4].x = -(0.6 * (1 - this.mouse.ratio.x) - 0.3) / 115;
+  this.curve.points[4].x = -(0.6 * (1 - this.mouse.ratio.x) - 0.3) / 4;
   this.curve.points[1].y = -(0.6 * (1 - this.mouse.ratio.y) - 0.3) / 15;
-  this.curve.points[2].y = (0.6 * (1 - this.mouse.ratio.y) - 0.3) / 115;
+  this.curve.points[2].y = (0.6 * (1 - this.mouse.ratio.y) - 0.3) / 4;
   this.curve.points[3].y = -0.015;
-  this.curve.points[4].y = -(0.6 * (1 - this.mouse.ratio.y) - 0.3) / 115 ;
+  this.curve.points[4].y = -(0.6 * (1 - this.mouse.ratio.y) - 0.3) / 4 ;
 
   this.splineMesh.geometry.verticesNeedUpdate = true;
   this.splineMesh.geometry.vertices = this.curve.getPoints(70);
@@ -559,7 +566,6 @@ Tunnel.prototype.render = function(time) {
   if(!global.hamburgerIsOpen) {
     raycaster.setFromCamera(mouse, global.camera)
     this.intersects = raycaster.intersectObjects(global.arrForTexts)
-    // console.log("second", this.intersects)
     for (const object of global.arrForTexts) {
       if(!global.checkModal) {
         object.material.color.set("#42434A")
@@ -749,15 +755,12 @@ ModalTunnel.prototype.init = function() {
   });
   this.renderer.setSize(this.modalWW ,this.modalWH)
 
-  this.camera = new THREE.PerspectiveCamera(15, ww /wh, 0.01, 100)
+  this.camera = new THREE.PerspectiveCamera(15, ww /wh, 0.01, 1000)
   globalForModal.camera = this.camera
   this.camera.rotation.y = Math.PI
-  this.camera.position.z = 0.25
+  this.camera.position.z = 0.6 // 0.25
 
   this.ResourceTracker.track(this.camera)
-  // if(globalForModal.cameraPositionNow) {
-  //   this.camera.position.set(globalForModal.cameraPositionNow)
-  // }
 
   this.scene = new THREE.Scene()
   this.scene.fog = new THREE.Fog(0x000d25,0.05,3.6)
@@ -866,13 +869,14 @@ ModalTunnel.prototype.handleEvents = function() {
   })
   // document.body.addEventListener('touchstart', this.onMouseDown.bind(this), false);
 };
-
+let num2 = 100
 ModalTunnel.prototype.onMouseDown = function() {
   if(event.deltaY > 0) {
+    num2 += event.deltaY;
     // scrollDown
     globalForModal.scrollWhere = 'down'
     TweenMax.to(this, 0, {
-      speed: 1550,
+      speed: 1550 + num2,
       ease: Power2.easeInOut
     })
     // document.body.style.cursor = "url(../img/cursor/scroll-cursor.png)"
@@ -881,14 +885,16 @@ ModalTunnel.prototype.onMouseDown = function() {
         speed: 0,
         ease: Power2.easeInOut
       })
+      num2 = 100
       globalForModal.scrollWhere = null
 
     }, 200)
   } else {
     //scrollTop
+    num2 += event.deltaY
     globalForModal.scrollWhere = 'top'
     TweenMax.to(this, 0, {
-      speed: 1550,
+      speed: 1550 + -(num2),
       ease: Power2.easeInOut
     })
     setTimeout(() => {
@@ -896,6 +902,7 @@ ModalTunnel.prototype.onMouseDown = function() {
         speed: 0,
         ease: Power2.easeInOut
       })
+      num2 = 100
       globalForModal.scrollWhere = null
     }, 200)
   }
@@ -906,7 +913,6 @@ const popupContent = document.querySelector(".popup_content")
 ModalTunnel.prototype.onResize = function() {
   this.modalWW = this.fakeCanvas.offsetWidth
   this.modalWH = this.fakeCanvas.offsetHeight
-  // console.log(this.modalWH)
 
   isMobile = this.modalWW < 500;
 
@@ -927,8 +933,8 @@ ModalTunnel.prototype.onMouseMove = function(e) {
 }
 
 ModalTunnel.prototype.updateCameraPosition = function() {
-  this.mouse.position.x += (this.mouse.target.x - this.mouse.position.x) / 250;
-  this.mouse.position.y += (this.mouse.target.y - this.mouse.position.y) / 250;
+  this.mouse.position.x += (this.mouse.target.x - this.mouse.position.x) / 120;
+  this.mouse.position.y += (this.mouse.target.y - this.mouse.position.y) / 120;
 
   this.mouse.ratio.x = (this.mouse.position.x / ww);
   this.mouse.ratio.y = (this.mouse.position.y / wh);
@@ -948,19 +954,19 @@ ModalTunnel.prototype.updateCurve = function() {
     vertice_o = this.tubeGeometry_o.vertices[i];
     vertice = this.tubeGeometry.vertices[i];
     index = Math.floor(i /30);
-    vertice.x += ((vertice_o.x + this.splineMesh.geometry.vertices[index].x) - vertice.x) / 5;
-    vertice.y += ((vertice_o.y + this.splineMesh.geometry.vertices[index].y) - vertice.y) / 5;
+    vertice.x += ((vertice_o.x + this.splineMesh.geometry.vertices[index].x) - vertice.x) / 1;
+    vertice.y += ((vertice_o.y + this.splineMesh.geometry.vertices[index].y) - vertice.y) / 1;
   }
   this.tubeGeometry.verticesNeedUpdate = true;
 
-  this.curve.points[1].x = -(0.6 * (1 - this.mouse.ratio.x) - 0.3) / 15;
-  this.curve.points[2].x = (0.6 * (1 - this.mouse.ratio.x) - 0.3) / 85;
+  this.curve.points[1].x = -(0.6 * (1 - this.mouse.ratio.x) - 0.3) / 55;
+  this.curve.points[2].x = (0.6 * (1 - this.mouse.ratio.x) - 0.3) / 5;
   this.curve.points[3].x = 0;
-  this.curve.points[4].x = -(0.6 * (1 - this.mouse.ratio.x) - 0.3) / 85;
-  this.curve.points[1].y = -(0.6 * (1 - this.mouse.ratio.y) - 0.3) / 15;
-  this.curve.points[2].y = (0.6 * (1 - this.mouse.ratio.y) - 0.3) / 85;
+  this.curve.points[4].x = -(0.6 * (1 - this.mouse.ratio.x) - 0.3) / 5;
+  this.curve.points[1].y = -(0.6 * (1 - this.mouse.ratio.y) - 0.3) / 55;
+  this.curve.points[2].y = (0.6 * (1 - this.mouse.ratio.y) - 0.3) / 5;
   this.curve.points[3].y = -0.015;
-  this.curve.points[4].y = -(0.6 * (1 - this.mouse.ratio.y) - 0.3) / 85 ;
+  this.curve.points[4].y = -(0.6 * (1 - this.mouse.ratio.y) - 0.3) / 5 ;
 
   this.splineMesh.geometry.verticesNeedUpdate = true;
   this.splineMesh.geometry.vertices = this.curve.getPoints(70);
