@@ -326,10 +326,10 @@ Tunnel.prototype.init = function() {
   });
   this.renderer.setSize(ww, wh)
 
-  this.camera = new THREE.PerspectiveCamera(15, ww / wh, 0.01, 1000)
+  this.camera = new THREE.PerspectiveCamera(15, ww / wh, 0.01, 100)
   global.camera = this.camera
   this.camera.rotation.y = Math.PI
-  this.camera.position.z = 0.25 // 0.25
+  this.camera.position.z = 0.5// 0.25
   if(global.cameraPositionNow) {
     this.camera.position.set(global.cameraPositionNow)
   }
@@ -396,7 +396,7 @@ Tunnel.prototype.createMesh = function() {
   this.scene.remove(this.tubeMesh)
 
   for (i = 0; i < 5; i += 1) {
-     points.push(new THREE.Vector3(0, 0, 3 * (i / 4)))
+     points.push(new THREE.Vector3(0, 0, 2.5 * (i / 4)))
   }
   points[4].y = -0.06
 
@@ -415,7 +415,8 @@ Tunnel.prototype.createMesh = function() {
   this.tubeGeometry = new THREE.TubeGeometry(this.curve, 70, 0.02, 30, false)
   this.tubeGeometry_o = this.tubeGeometry.clone()
   this.tubeMesh = new THREE.Mesh(this.tubeGeometry, this.tubeMaterial);
-  this.tubeMesh.scale.set(0.81,0.68,1)
+  this.tubeMesh.scale.set(0.81,0.7,1)
+  // this.tubeMesh.scale.set(5,5,1)
   this.tubeMesh.position.set(0, 0, 0)
   this.scene.add(this.tubeMesh);
 };
@@ -495,15 +496,15 @@ Tunnel.prototype.onMouseMove = function(e) {
 }
 
 Tunnel.prototype.updateCameraPosition = function() {
-  this.mouse.position.x += (this.mouse.target.x - this.mouse.position.x) / 30;
-  this.mouse.position.y += (this.mouse.target.y - this.mouse.position.y) / 30;
+  this.mouse.position.x += (this.mouse.target.x - this.mouse.position.x) / 10
+  this.mouse.position.y += (this.mouse.target.y - this.mouse.position.y) / 10
 
-  this.mouse.ratio.x = (this.mouse.position.x / ww);
-  this.mouse.ratio.y = (this.mouse.position.y / wh);
+  this.mouse.ratio.x = (this.mouse.position.x / ww)
+  this.mouse.ratio.y = (this.mouse.position.y / wh)
 
-  this.camera.rotation.y = Math.PI - (this.mouse.ratio.x * 0.1 - 0.05);
-  // this.camera.position.x = -(this.mouse.ratio.x * 0.0008 - 0.0004) * 22;
-  // this.camera.position.y = -(this.mouse.ratio.y * 0.0008 - 0.0004) * 22;
+  this.camera.rotation.y = Math.PI - (this.mouse.ratio.x * 0.1 - 0.05)
+  this.camera.position.x = -(this.mouse.ratio.x * 0.0008 - 0.0004) * 6;
+  this.camera.position.y = -(this.mouse.ratio.y * 0.0008 - 0.0004) * 8;
   global.cameraPositionNow = this.camera.position
 }
 
@@ -521,14 +522,22 @@ Tunnel.prototype.updateCurve = function() {
   }
   this.tubeGeometry.verticesNeedUpdate = true;
 
-  this.curve.points[1].x = -(0.6 * (1 - this.mouse.ratio.x) - 0.3) / 90;
-  this.curve.points[2].x = (0.6 * (1 - this.mouse.ratio.x) - 0.3) / 8;
+  this.curve.points[1].x = -(0.6 * (1 - this.mouse.ratio.x) - 0.3) / 80;
+  this.curve.points[2].x = (0.6 * (1 - this.mouse.ratio.x) - 0.3) / 25;
   this.curve.points[3].x = 0;
-  this.curve.points[4].x = -(0.6 * (1 - this.mouse.ratio.x) - 0.3) / 8;
-  this.curve.points[1].y = -(0.6 * (1 - this.mouse.ratio.y) - 0.3) / 90;
-  this.curve.points[2].y = (0.6 * (1 - this.mouse.ratio.y) - 0.3) / 8
-  this.curve.points[3].y = -0.02;
-  this.curve.points[4].y = (0.6 * (1 - this.mouse.ratio.y) - 0.3) / 8 ;
+  this.curve.points[4].x = (0.6 * (1 - this.mouse.ratio.x) - 0.3) / 25;
+  this.curve.points[1].y = -(0.6 * (1 - this.mouse.ratio.y) - 0.3) / 80;
+  this.curve.points[2].y = (0.6 * (1 - this.mouse.ratio.y) - 0.3) / 25;
+  this.curve.points[3].y = 0;
+  this.curve.points[4].y = (0.6 * (1 - this.mouse.ratio.y) - 0.3) / 25;
+
+  // this.curve.points[2].x = 0.6 * (1 - this.mouse.ratio.x) - 0.3;
+  // this.curve.points[3].x = 0;
+  // this.curve.points[4].x = 0.6 * (1 - this.mouse.ratio.x) - 0.3;
+  //
+  // this.curve.points[2].y = 0.6 * (1 - this.mouse.ratio.y) - 0.3;
+  // this.curve.points[3].y = 0;
+  // this.curve.points[4].y = 0.6 * (1 - this.mouse.ratio.y) - 0.3;
 
   this.splineMesh.geometry.verticesNeedUpdate = true;
   this.splineMesh.geometry.vertices = this.curve.getPoints(70);
@@ -623,8 +632,8 @@ function Particle(scene, burst, time, i, texture, color) {
 
   if (!this.burst){
     this.speed *= 0.000001;
-    this.mesh.scale.x *= 27.4;
-    this.mesh.scale.y *= 27.4;
+    this.mesh.scale.x *= 27.4; // 27.4
+    this.mesh.scale.y *= 27.4; // 27.4
     this.mesh.scale.z *= 1.4;
   }
   scene.add(this.mesh)
