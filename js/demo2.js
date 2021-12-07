@@ -267,7 +267,7 @@ Tunnel.prototype.init = function() {
   this.renderer.setClearColor(0xfffffff)
   this.renderer.setSize(ww, wh)
 
-  this.camera = new THREE.PerspectiveCamera(5, ww / wh, 0.01, 1000)
+  this.camera = new THREE.PerspectiveCamera(15, ww / wh, 0.01, 1000)
   global.camera = this.camera
   this.camera.rotation.y = Math.PI
   this.camera.position.z = 0.5// 0.25
@@ -329,7 +329,7 @@ Tunnel.prototype.createMesh = function() {
   this.scene.remove(this.tubeMesh)
 
   for (i = 0; i < 5; i += 1) {
-     points.push(new THREE.Vector3(0, 0, 7.7 * (i / 4)))
+     points.push(new THREE.Vector3(0, 0, 2.7 * (i / 4)))
   }
   points[1].x = -0.06
   points[2].y = 0.06
@@ -429,15 +429,15 @@ Tunnel.prototype.onMouseMove = function(e) {
 }
 
 Tunnel.prototype.updateCameraPosition = function() {
-  this.mouse.position.x += (this.mouse.target.x - this.mouse.position.x) / 70
-  this.mouse.position.y += (this.mouse.target.y - this.mouse.position.y) / 70
+  this.mouse.position.x += (this.mouse.target.x - this.mouse.position.x) / 40
+  this.mouse.position.y += (this.mouse.target.y - this.mouse.position.y) / 40
 
   this.mouse.ratio.x = (this.mouse.position.x / ww)
   this.mouse.ratio.y = (this.mouse.position.y / wh)
 
   this.camera.rotation.y = Math.PI - (this.mouse.ratio.x * 0.1 - 0.05)
-  this.camera.position.x = -(this.mouse.ratio.x * 0.0008 - 0.0004) * -8;
-  this.camera.position.y = -(this.mouse.ratio.y * 0.0008 - 0.0004) * 8;
+  this.camera.position.x = -(this.mouse.ratio.x * 0.00008 - 0.00004) * -8;
+  this.camera.position.y = -(this.mouse.ratio.y * 0.00008 - 0.00004) * -10;
   // this.camera.rotation.x +=this.camera.position.x * 2
   // this.camera.rotation.y += this.camera.position.y * 2
 
@@ -462,19 +462,19 @@ Tunnel.prototype.updateCurve = function(delta) {
   this.tubeGeometry.verticesNeedUpdate = true;
 
   this.curve.points[1].x = -(0.6 * (1 - this.mouse.ratio.x) - 0.3) / 150;
-  this.curve.points[2].x = (0.6 * (1 - this.mouse.ratio.x) - 0.3) / 1;
+  this.curve.points[2].x = (0.6 * (1 - this.mouse.ratio.x) - 0.3) /3;
   this.curve.points[3].x = 0;
-  this.curve.points[4].x = (0.6 * (1 - this.mouse.ratio.x) - 0.3) / 1;
+  this.curve.points[4].x = (0.6 * (1 - this.mouse.ratio.x) - 0.3) / 3;
   this.curve.points[1].y = -(0.6 * (1 - this.mouse.ratio.y) - 0.3) / 150;
-  this.curve.points[2].y = (0.6 * (1 - this.mouse.ratio.y) - 0.3) / 1;
+  this.curve.points[2].y = (0.6 * (1 - this.mouse.ratio.y) - 0.3) / 3;
   this.curve.points[3].y = 0;
-  this.curve.points[4].y = (0.6 * (1 - this.mouse.ratio.y) - 0.3) / 1;
+  this.curve.points[4].y = (0.6 * (1 - this.mouse.ratio.y) - 0.3) / 3;
   this.splineMesh.geometry.verticesNeedUpdate = true;
   this.splineMesh.geometry.vertices = this.curve.getPoints(70);
 }
 
 let selectedObject = null,
-    max = 2.6, min = 2.8
+    max = 2.55, min = 2.9
 
 Tunnel.prototype.render = function(delta) {
   if(!global.checkModal && global.videoIsEnd && !global.leaveFromWindow) {
@@ -535,7 +535,7 @@ Tunnel.prototype.render = function(delta) {
         // gsap.to(object.children[0].rotation, {x: 0.004, y: 0.004, z: 1, duration: 2})
         if(global.scrollWhere === 'down' || global.scrollWhere === 'top') {
           // console.log(object.children[0].rotation)
-          gsap.to(object.children[0].rotation, { z: Math.random() * (max - min) + min, duration: 3})
+          gsap.to(object.children[0].rotation, { z: Math.random() * (max - min) + min, duration: 2})
 
           global.takeCanvas.style.cursor = "url('/img/cursor/cursor-prob.svg'), pointer" +
               " "
@@ -563,7 +563,7 @@ Tunnel.prototype.render = function(delta) {
           if( selectedObject.children[0].geometry.type === 'PlaneGeometry') {
             gsap.to(selectedObject.children[0].scale, {x: 1.2, y: 0.8})
             gsap.to(selectedObject.children[0].material.color, {r: 0, b: 0, g: 0})
-            gsap.to(selectedObject.scale, {x: 0.009, y: 0.009, duration: 2})
+            gsap.to(selectedObject.scale, {x: 0.007, y: 0.007, duration: 2})
           }
           } catch (e) {
           }
