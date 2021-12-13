@@ -354,7 +354,7 @@ Tunnel.prototype.init = function() {
 Tunnel.prototype.addParticle = function() {
   this.plane = new THREE.PlaneBufferGeometry( .783, .96 )
   this.planeText = new THREE.PlaneBufferGeometry( .3, .2 )
-  this.planeSubText = new THREE.PlaneBufferGeometry( .6, .2 )
+  this.planeSubText = new THREE.PlaneGeometry( .6, .2, 10, 10 )
   this.particles = []
   this.color = []
   this.fir = [69, 149, 163]
@@ -404,7 +404,7 @@ Tunnel.prototype.addParticle = function() {
 Tunnel.prototype.createMesh = function() {
   var points = []
   var i = 0
-  var geometry = new THREE.Geometry()
+  var geometry
 
   this.scene.remove(this.tubeMesh)
 
@@ -438,7 +438,6 @@ Tunnel.prototype.handleEvents = function() {
   window.addEventListener('resize', this.onResize.bind(this), false)
   clickable.addEventListener('mousewheel', this.onMouseDown.bind(this), false);
   clickable.addEventListener('mousemove', this.onMouseMove.bind(this), false);
-  // window.addEventListener('mouseout', this.onMouseUp.bind(this), false);
   clickable.addEventListener('mouseleave', (event) => {
     global.leaveFromWindow = true
   }, false);
@@ -455,8 +454,8 @@ Tunnel.prototype.onMouseDown = function() {
     // scrollDown
     global.scrollWhere = 'down'
     TweenMax.to(this, 0, {
-      speed: 550 + num1,
-      ease: "elastic"  //  Power1.easeInOut
+      speed: 550 + num1, // 550 + num1
+      ease: "elastic",
     })
     // document.body.style.cursor = "url(../img/cursor/scroll-cursor.png)"
     setTimeout(() => {
@@ -622,24 +621,13 @@ Tunnel.prototype.render = function(time) {
             b: colorF.b
           })
           gsap.to(object.children[0].children[1].material.color, {
-            r: colorF.r,
-            g: colorF.g,
-            b: colorF.b
-          })
-        } else if( object.children[0].material.name === 'red' ) {
-          gsap.to(object.children[0].children[0].material.color, {
-            r: colorF.r,
-            g: colorF.g,
-            b: colorF.b
-          })
-          gsap.to(object.children[0].children[1].material.color, {
-            r: colorF.r,
-            g: colorF.g,
-            b: colorF.b
+            r: object.children[0].material.color.r,
+            g: object.children[0].material.color.g,
+            b: object.children[0].material.color.b
           })
         } else {
           gsap.to(object.children[0].children[0].material.color, {r: colorB.r, g: colorB.g, b: colorB.b})
-          gsap.to(object.children[0].children[1].material.color, {r: colorB.r, g: colorB.g, b: colorB.b})
+          gsap.to(object.children[0].children[1].material.color, {r: object.children[0].material.color.r, g: object.children[0].material.color.g, b: object.children[0].material.color.b})
         }
         if(global.scrollWhere === 'down' || global.scrollWhere === 'top') {
           gsap.to(object.children[0].rotation, { z: Math.random() * (max - min) + min, duration: 2})
@@ -675,14 +663,7 @@ Tunnel.prototype.render = function(time) {
               b: 0
             })
           }
-          else if (selectedObject.parent.material.name === 'red') {
-            gsap.to(selectedObject.material.color, {r: 0, g: 0, b: 0})
-            gsap.to(selectedObject.parent.children[1].material.color, {
-              r: 0,
-              g: 0,
-              b: 0
-            })
-          } else {
+           else {
             gsap.to(selectedObject.material.color, {r: 2, g: 2, b: 2})
             gsap.to(selectedObject.parent.children[1].material.color, {r: 2, g: 2, b: 2})
           }
@@ -707,11 +688,10 @@ Tunnel.prototype.render = function(time) {
 
 function Particle(scene, burst, time, i, texture, color, plane, text, newPosition, positionForNamastate, textGeometry, textSubGeometry, textForSubTitle) {
   const radius = .022
-  this.convertTexture = texture[i][0]
+  this.material = texture[i][0]
 
-  this.convertTexture.depthWrite = false
-  this.convertTexture.transparent = true
-  this.mesh = new THREE.Mesh(plane, this.convertTexture);
+  this.material.transparent = true
+  this.mesh = new THREE.Mesh(plane, this.material);
   this.mesh.scale.set(radius, radius, radius);
   this.mesh.position.set(0, 0, 0);
   this.percent = i * .06;
@@ -763,9 +743,16 @@ function Particle(scene, burst, time, i, texture, color, plane, text, newPositio
     opacity: 1.4
   })
   this.textMesh = new THREE.Mesh(textGeometry, this.textMaterial)
+  try {
+    for (var i =0; i< textSubGeometry.vertices.length; i++) {
+      textSubGeometry.vertices[2*i].position.z = Math.pow(2, i / 20)
+      textSubGeometry.vertices[2*i+1].position.z = Math.pow(2, i / 20)
+    }
+  } catch (e) {
+
+  }
   this.subTextMesh = new THREE.Mesh(textSubGeometry, this.subTextMaterial)
   this.mesh.add(this.textMesh, this.subTextMesh)
-  // global.arrForMesh.push(this.mesh)
 
   this.textMesh.name = text
   this.subTextMesh.name = textForSubTitle
@@ -778,15 +765,12 @@ function Particle(scene, burst, time, i, texture, color, plane, text, newPositio
     this.textMesh.position.set(0, 0.435, 0.1)
     this.subTextMesh.position.set(0.256, -0.13, 0.15)
     this.subTextMesh.rotation.set(0, 0, 0.9)
-
-    // this.subTextMesh.position.set(0, 0.435, 0.1)
   }
   global.arrForTexts.push(this.textMesh)
   global.arrForSubTexts.push(this.subTextMesh)
   global.arrForGroup.push(group)
   group.add(this.mesh)
   scene.add(group)
-  // this.positionForText = this.textMesh.name[0] === 'NAMASTATE' ? positionForNamastate : newPosition
 }
 
 Particle.prototype.update = function (tunnel) {
@@ -807,15 +791,6 @@ Particle.prototype.update = function (tunnel) {
 const document1 = document.querySelector('.content')
 
 window.onload = function() {
-  // const materials = [
-  //   new THREE.MeshBasicMaterial({alphaMap: loader.load("/img/texture/Chunnel_1.png"),map: loader.load("/img/texture/Chunnel_1.png"), opacity: 1.7 , side: THREE.FrontSide, transparent: true}),
-  //   new THREE.MeshBasicMaterial({alphaMap: loader.load("/img/texture/Chunnel_2.png"),map: loader.load("/img/texture/Chunnel_2.png"), opacity: 1.7 , side: THREE.FrontSide, transparent: true}),
-  //   new THREE.MeshBasicMaterial({alphaMap: loader.load("/img/texture/Chunnel_3.png"),map: loader.load("/img/texture/Chunnel_3.png"), opacity: 1.7 , side: THREE.FrontSide, transparent: true}),
-  //   new THREE.MeshBasicMaterial({alphaMap: loader.load("/img/texture/Chunnel_4.png"),map: loader.load("/img/texture/Chunnel_4.png"), opacity: 1.7 , side: THREE.FrontSide, transparent: true, name: "blue"}),
-  //   new THREE.MeshBasicMaterial({alphaMap: loader.load("/img/texture/Chunnel_5.png"),map: loader.load("/img/texture/Chunnel_5.png"), opacity: 1.7 , side: THREE.FrontSide, transparent: true}),
-  //   new THREE.MeshBasicMaterial({alphaMap: loader.load("/img/texture/Chunnel_6.png"),map: loader.load("/img/texture/Chunnel_6.png"), opacity: 1.7 , side: THREE.FrontSide, transparent: true})
-  // ]
-
   const materials = [
     new THREE.MeshBasicMaterial({alphaMap: loader.load("/img/texture/clearTexture/Chunnel_1.png"), opacity: 2, side: THREE.FrontSide, color: "#ACB1D0"}),
     new THREE.MeshBasicMaterial({alphaMap: loader.load("/img/texture/clearTexture/Chunnel_2.png"), opacity: 2, side: THREE.FrontSide, color: "#F6AD5E"}),
@@ -823,7 +798,7 @@ window.onload = function() {
     new THREE.MeshBasicMaterial({alphaMap: loader.load("/img/texture/clearTexture/Chunnel_4.png"), opacity: 2, side: THREE.FrontSide, color: "#4595A3", name: "blue"}),
     new THREE.MeshBasicMaterial({alphaMap: loader.load("/img/texture/clearTexture/Chunnel_5.png"), opacity: 2, side: THREE.FrontSide, color: "#A9D060"}),
     new THREE.MeshBasicMaterial({alphaMap: loader.load("/img/texture/clearTexture/Chunnel_6.png"), opacity: 2 , side: THREE.FrontSide, color: "#80CED0"}),
-    new THREE.MeshBasicMaterial({alphaMap: loader.load("/img/texture/clearTexture/Chunnel_7.png"), opacity: 2 , side: THREE.FrontSide,color: "#D87B47", name: "red"}) //"#F3F0EF"
+    new THREE.MeshBasicMaterial({alphaMap: loader.load("/img/texture/clearTexture/Chunnel_7.png"), opacity: 2 , side: THREE.FrontSide,color: "#D87B47", name: "red"})
   ]
 
   loadManager.onLoad = () => {
