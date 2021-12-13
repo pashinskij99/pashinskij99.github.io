@@ -304,7 +304,9 @@ window.addEventListener('click', () => {
 //   }
 // })
 
-function Tunnel(texture, canvas) {
+function Tunnel(texture, canvas, textTexture, textSubTexture) {
+  this.textTexture = textTexture
+  this.textSubTexture = textSubTexture
   this.texture = texture
   this.canvas = canvas
 
@@ -353,8 +355,8 @@ Tunnel.prototype.init = function() {
 
 Tunnel.prototype.addParticle = function() {
   this.plane = new THREE.PlaneBufferGeometry( .783, .96 )
-  this.planeText = new THREE.PlaneBufferGeometry( .3, .2 )
-  this.planeSubText = new THREE.PlaneGeometry( .6, .2, 10, 10 )
+  this.planeText = new THREE.PlaneBufferGeometry( .25, .2 )
+  this.planeSubText = new THREE.PlaneGeometry( .15, .03 )
   this.particles = []
   this.color = []
   this.fir = [69, 149, 163]
@@ -364,24 +366,22 @@ Tunnel.prototype.addParticle = function() {
   this.five = [246, 173, 94]
   this.six = [169, 208, 96]
   this.text = []
-  this.firText = ['AWARENESS']
-  this.secText = ['JOURNEY']
-  this.thirText = ['ALL GOODS']
-  this.fourText = ["SENSORIA"]
-  this.fiveText = ["COMMUNITAS"]
-  this.sixText = ['NAMA VISION']
-  this.sevenText = ['CONNECT']
-  this.eightText = ['NAMASTATE']
+  this.firText = [this.textTexture[0]]
+  this.secText = [this.textTexture[1]]
+  this.thirText = [this.textTexture[2]]
+  this.fourText = [this.textTexture[3]]
+  this.fiveText = [this.textTexture[4]]
+  this.sixText = [this.textTexture[5]]
+  this.sevenText = [this.textTexture[6]]
+  this.eightText = [this.textTexture[7]]
   this.textSub = []
-  this.textSub1 = ['Mind the Mantra']
-  this.textSub2 = ['Choose an Expirience']
-  this.textSub3 = ['Shop Sustainable Goods']
-  this.textSub4 = ['Stream Conscious Content']
-  this.textSub5 = ['Reimagine Community']
-  this.textSub6 = ['Meet the NAMASTATE Team']
-  this.textSub7 = ['Get in Touch']
-  this.positionCenter = [-0.002, -0.0001, 0, 0] //center
-  this.positionForNamastate = [-0.0072, -0.013, 0, 0.93]
+  this.textSub1 = [this.textSubTexture[0]]
+  this.textSub2 = [this.textSubTexture[1]]
+  this.textSub3 = [this.textSubTexture[2]]
+  this.textSub4 = [this.textSubTexture[3]]
+  this.textSub5 = [this.textSubTexture[4]]
+  this.textSub6 = [this.textSubTexture[5]]
+  this.textSub7 = [this.textSubTexture[6]]
   this.textures = []
   this.texture1 = [this.texture[0]]
   this.texture2 = [this.texture[1]]
@@ -397,7 +397,7 @@ Tunnel.prototype.addParticle = function() {
     this.text.push(this.firText,this.secText,this.thirText,this.fourText,this.fiveText, this.sixText,this.sevenText, this.eightText)
     this.textSub.push(this.textSub1, this.textSub2,this.textSub3,this.textSub4,this.textSub5,this.textSub6, this.textSub7)
     this.color.push(this.fir, this.sec, this.thir, this.four, this.five, this.six)
-    this.particles.push(new Particle(this.scene, false, 100, i, this.textures, this.color, this.plane, this.text[i], this.positionCenter, this.positionForNamastate, this.planeText, this.planeSubText, this.textSub[i]))
+    this.particles.push(new Particle(this.scene, i, this.textures, this.color, this.plane, this.text[i],  this.planeText, this.planeSubText, this.textSub[i]))
   }
 };
 
@@ -546,7 +546,6 @@ Tunnel.prototype.updateCameraPosition = function() {
 
   const test1 = 0.000008;
   const test2 = test1 / 2;
-  // console.log(this.mouse.ratio.y)
   this.camera.rotation.y = Math.PI - (this.mouse.ratio.x * 0.1 - 0.05)
   this.camera.position.x = (this.mouse.ratio.x * test1 - test2);
   this.camera.position.y = -(this.mouse.ratio.y * test1 - test2) - -0.00541;
@@ -584,6 +583,7 @@ Tunnel.prototype.updateCurve = function() {
 let selectedObject = null, max = -0.15, min = 0.15
 const colorF = new THREE.Color("#F3F0EF")
 const colorB = new THREE.Color("#4595A3")
+const colorC = new THREE.Color("#F8D185")
 
 Tunnel.prototype.render = function(time) {
   if(!global.checkModal && global.videoIsEnd && !global.leaveFromWindow) {
@@ -614,6 +614,7 @@ Tunnel.prototype.render = function(time) {
 
     for (const object of global.arrForGroup) {
       if(!global.checkModal) {
+        
         if( object.children[0].material.name === 'blue' ) {
           gsap.to(object.children[0].children[0].material.color, {
             r: colorF.r,
@@ -625,7 +626,15 @@ Tunnel.prototype.render = function(time) {
             g: object.children[0].material.color.g,
             b: object.children[0].material.color.b
           })
-        } else {
+        } 
+        // else if( object.children[0].name === 49 ) {
+        //   gsap.to(object.children[0].material.color, {
+        //     r: colorC.r,
+        //     g: colorC.g,
+        //     b: colorC.b
+        //   })
+        // }
+         else {
           gsap.to(object.children[0].children[0].material.color, {r: colorB.r, g: colorB.g, b: colorB.b})
           gsap.to(object.children[0].children[1].material.color, {r: object.children[0].material.color.r, g: object.children[0].material.color.g, b: object.children[0].material.color.b})
         }
@@ -668,7 +677,6 @@ Tunnel.prototype.render = function(time) {
             gsap.to(selectedObject.parent.children[1].material.color, {r: 2, g: 2, b: 2})
           }
           gsap.to( selectedObject.parent.parent.scale, {x: 1.02, y: 1.02, duration: 3, ease: 'elastic'})
-
         }
       }
     }
@@ -686,21 +694,25 @@ Tunnel.prototype.render = function(time) {
     window.requestAnimationFrame(this.render.bind(this));
 }
 
-function Particle(scene, burst, time, i, texture, color, plane, text, newPosition, positionForNamastate, textGeometry, textSubGeometry, textForSubTitle) {
+function Particle(scene,  i, texture, color, plane, text, textGeometry, textSubGeometry, textForSubTitle ) {
   const radius = .022
   this.material = texture[i][0]
-
+  if(i === 49) {
+    this.material = this.material.clone()
+    this.material.color = new THREE.Color("#F8D185")
+  }
   this.material.transparent = true
   this.mesh = new THREE.Mesh(plane, this.material);
   this.mesh.scale.set(radius, radius, radius);
   this.mesh.position.set(0, 0, 0);
-  this.percent = i * .06;
-  this.burst = burst ? true : false;
+  this.percent = i * 0.02;
+  this.burst =  false;
   this.offset = new THREE.Vector3(0, 0, 0);
   this.speed = 1;
   this.mesh.rotation.y = Math.PI
+  this.mesh.name = i
   const group = new THREE.Group()
-
+  scene.add(group)
   if (!this.burst){
     this.speed *= 0.000001;
   }
@@ -708,53 +720,28 @@ function Particle(scene, burst, time, i, texture, color, plane, text, newPositio
   * Text
   * */
   this.i = i
-  var canvas = document.createElement("canvas");
-  canvas.width = 512;
-  canvas.height = 128;
-  var texture = new THREE.Texture(canvas);
-  texture.needsUpdate = true;
-  var context = canvas.getContext("2d");
-  var x = window.innerWidth / 2 - 300;
-  var y = window.innerHeight / 2 - 300;
-  context.font = "70px Namastate-Regular"
-  context.textAlign = "center";
-  context.fillStyle = "#fff";
-  context.fillText(text, canvas.width / 2, canvas.height / 2);
+
   this.textMaterial = new THREE.MeshBasicMaterial({
-    alphaMap: texture,
+    alphaMap: text[0],
+    depthTest: false,
     side: THREE.FrontSide,
     transparent: true,
-    opacity: 1.4
+    opacity: 2
   })
-  var subCanvas = document.createElement("canvas");
-  subCanvas.width = 2048;
-  subCanvas.height = 1024;
-  var subTexture = new THREE.Texture(subCanvas);
-  subTexture.needsUpdate = true;
-  var subContext = subCanvas.getContext("2d");
-  subContext.font = "70px Namastate-Regular"
-  subContext.textAlign = "center";
-  subContext.fillStyle = "#fff";
-  subContext.fillText(textForSubTitle, subCanvas.width / 2, subCanvas.height / 2);
+
+
   this.subTextMaterial = new THREE.MeshBasicMaterial({
-    alphaMap: subTexture,
+    alphaMap: textForSubTitle[0],
     side: THREE.FrontSide,
     transparent: true,
     opacity: 1.4
   })
   this.textMesh = new THREE.Mesh(textGeometry, this.textMaterial)
-  try {
-    for (var i =0; i< textSubGeometry.vertices.length; i++) {
-      textSubGeometry.vertices[2*i].position.z = Math.pow(2, i / 20)
-      textSubGeometry.vertices[2*i+1].position.z = Math.pow(2, i / 20)
-    }
-  } catch (e) {
 
-  }
   this.subTextMesh = new THREE.Mesh(textSubGeometry, this.subTextMaterial)
   this.mesh.add(this.textMesh, this.subTextMesh)
 
-  this.textMesh.name = text
+  // this.textMesh.name = text[i]
   this.subTextMesh.name = textForSubTitle
   if(this.textMesh.name[0] === 'NAMASTATE'){
     this.textMesh.position.set(-0.156, -0.26, 0.2)
@@ -763,7 +750,7 @@ function Particle(scene, burst, time, i, texture, color, plane, text, newPositio
     this.subTextMesh.rotation.set(0, 0, 0.9)
   } else {
     this.textMesh.position.set(0, 0.435, 0.1)
-    this.subTextMesh.position.set(0.256, -0.13, 0.15)
+    this.subTextMesh.position.set(0.256, -0.11, 0.15)
     this.subTextMesh.rotation.set(0, 0, 0.9)
   }
   global.arrForTexts.push(this.textMesh)
@@ -776,21 +763,41 @@ function Particle(scene, burst, time, i, texture, color, plane, text, newPositio
 Particle.prototype.update = function (tunnel) {
   if(!global.checkModal) {
     if(global.scrollWhere === "down") {
-      this.percent -= (this.speed - 2  ) * (this.burst ? 1 : tunnel.speed + 1)
+      this.percent -= (this.speed - 2  ) * (tunnel.speed)
     } else if(global.scrollWhere === "top") {
-      this.percent += this.speed * (this.burst ? 1 : tunnel.speed + 1)
+      this.percent += this.speed * (tunnel.speed)
     }
   }
-
-  this.pos = tunnel.curve.getPoint(1 - (this.percent%1)).add(this.offset)
+  this.pos = tunnel.curve.getPoint(1 - ((this.percent + 1)%1))
   global.thisPos = this.pos
   this.mesh.position.x = this.pos.x - 0.000;
   this.mesh.position.y = this.pos.y - 0.0013;
-  this.mesh.position.z = this.pos.z + 0.00001;
+  this.mesh.position.z =  0.000001 + this.pos.z 
 }
 const document1 = document.querySelector('.content')
 
 window.onload = function() {
+  const textTexture = [
+      loader.load("/img/texture/clearTexture/connect.png"),
+      loader.load("/img/texture/clearTexture/awarenes.png"),
+      loader.load("/img/texture/clearTexture/journey.png"),
+      loader.load("/img/texture/clearTexture/communitas.png"),
+      loader.load("/img/texture/clearTexture/sensoria.png"),
+      loader.load("/img/texture/clearTexture/all_goods.png"),
+      loader.load("/img/texture/clearTexture/nama.png"),
+      loader.load("/img/texture/clearTexture/namastate.png")
+  ]
+
+  const textSubTexture = [
+    loader.load("/img/texture/clearTexture/mind.png"),
+    loader.load("/img/texture/clearTexture/choose.png"),
+    loader.load("/img/texture/clearTexture/stream.png"),
+    loader.load("/img/texture/clearTexture/shop.png"),
+    loader.load("/img/texture/clearTexture/stay.png"),
+    loader.load("/img/texture/clearTexture/discover.png"),
+    loader.load("/img/texture/clearTexture/contact.png"),
+  ]
+
   const materials = [
     new THREE.MeshBasicMaterial({alphaMap: loader.load("/img/texture/clearTexture/Chunnel_1.png"), opacity: 2, side: THREE.FrontSide, color: "#ACB1D0"}),
     new THREE.MeshBasicMaterial({alphaMap: loader.load("/img/texture/clearTexture/Chunnel_2.png"), opacity: 2, side: THREE.FrontSide, color: "#F6AD5E"}),
@@ -803,7 +810,7 @@ window.onload = function() {
 
   loadManager.onLoad = () => {
     // window.tunnelModal = new ModalTunnel(materials, document.querySelector(".prob_canvas"))
-    window.tunnel = new Tunnel(materials,document.querySelector("#scene"))
+    window.tunnel = new Tunnel(materials,document.querySelector("#scene"), textTexture, textSubTexture)
   }
 }
 
