@@ -28,21 +28,19 @@
 
 body {
 	--text-color: #f0f0f0;
-	/*--background-color: rgb(223, 114, 44);*/
+	--background-color: #5f5c58;
 	--link-color: #e2bd7d;
 	--link-hover-color: #e2bd7d;
-	/*font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;*/
-	font-family: "Namastate-Regular";
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
 	color: #ddd;
 	color: var(--text-color);
-	/*background: #000;*/
-	background: rgb(236, 94, 13);
+	background: #000;
+	background: var(--background-color);
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	font-size: 15px;
 	height: 100vh;
 	overflow: hidden;
-	/*cursor: url('/img/cursor/cursor-prob.svg'), ;*/
 }
 
 a {
@@ -192,394 +190,39 @@ a:focus {
 	padding: 0;
 }
 
-.modal {
-	min-width: 100%;
-	min-height: 100vh;
-}
-.modal_container {
-	position: fixed;
-	display: block;
-	top: 40%;
-	left: 0;
-	right: 0;
-	width: 450px;
-	height: 300px;
-	margin: 0 auto;
-	z-index: 5;
-	background: rgba(248, 245, 245, 0.86);
-	box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.38);
-	border-radius: 2%;
-}
-.modal-body {
-	position: fixed;
-	top: 0;
-	left: 0;
-	z-index: 4;
-	width: 100vw;
-	height: 100%;
-}
-
-.modal h1 {
-	font-family: "Namastate-Regular";
-	font-size: 50px;
-	text-align: center;
-	color: #000;
-}
-.modal_close {
-	position: relative;
-	font-weight: 900;
-	color: #fff;
-	font-size: 15px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 40px;
-	height: 40px;
-	margin-left: auto;
-	background: #e92a0f;
-	cursor: pointer;
-	border-radius: 0 15% 0 15%;
-}
-
-.modal_close_item {
-	position: absolute;
-}
-
-.btn-music {
-	font-family: "Namastate-Regular";
-	position: fixed;
-	bottom: 4%;
-	left: 5%;
-	background: transparent;
-	z-index: 3;
-	border: none;
-	font-size: 23px;
-	color: #F3F0EF;
-	letter-spacing: 0.14rem;
-	cursor: pointer;
-}
-
-
 #scene.clickable{
-	position: fixed;
-	/*cursor:auto;*/
-	z-index: 4;
-	/*transform: scale(1, 1);*/
-	transition: transform 2s ease-in-out;
+	cursor: pointer;
 }
 
 /* Demo themes */
 .demo-2 {
-	--background-color: #ffffff;
+	--background-color: #fff;
 	--text-color: #8389a6;
 	--link-color: #1679d1;
 	--link-hover-color: #6a22ba;
 }
 
-.video {
-	/*opacity: 1;*/
-	/*transition: all 5s ease-in-out;*/
+.demo-3 {
+	--background-color: #381e6f;
+	--link-color: #d7b5fc;
+	--link-hover-color: #cbfaf2;
 }
 
-.closeVideoBtn {
-	font-family: "Namastate-Regular";
-	font-size: 23px;
-	color: #F3F0EF;
-	letter-spacing: 0.14rem;
-	position: absolute;
-	left: 5%;
-	bottom: 7%;
-	width: fit-content;
-	height: fit-content;
-	z-index: 3;
-	cursor: pointer;
-	padding: 5px 10px;
-	/*cursor: url('/img/cursor/Hand-Shaped-Mouse-Icon-Vector.svg'), pointer;*/
+.demo-4 {
+	--background-color: #780f00;
+	--link-color: #e92a0f;
+	--link-hover-color: #fff;
 }
 
-#video-bg {
-	position: fixed;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	left: 0;
-	overflow: hidden;
-	z-index: 3;
-	opacity: 1;
-	transition: all 1s ease-in;
-}
-#video-bg > video {
-	position: absolute;
-	top: 0;
-	left: 0;
-	min-width: 100%;
-	min-height: 100%;
-	width: auto;
-	height: auto;
+.demo-5 {
+	--background-color: #52d9e0;
+	--link-color: #85fff0;
+	--link-hover-color: #4730b3;
 }
 
-.noPointer {
-	pointer-events: none;
-}
-
-.noselect {
-	-moz-user-select: none;
-	-webkit-user-select: none;
-	-webkit-touch-callout: none;
-	-ms-user-select: none;
-	-o-user-select: none;
-	user-select: none;
-	-khtml-user-select: none;
-}
-
-.hamburger {
-	position: fixed;
-	z-index: 5;
-	top: 3%;
-	right: 3%;
-}
-
-.hamburger .hamburger-container {
-	position: relative;
-	width: 80px;
-	height: 80px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	cursor: pointer;
-	transition: all .4s ease-in-out;
-	padding: 5px;
-	border-radius: 50%;
-	background: url('/img/burger/burger.png')no-repeat center / cover;
-	background-size: 80% 80%;
-	transform: scale(1, 1);
-}
-.hamburger-close {
-	background: transparent!important;
-	transition: all .4s ease-in-out;
-}
-.hamburger .hamburger-container.hamburger-close::before {
-	position: absolute;
-	content: "X";
-	color: darkslategrey;
-	transform: scale(3,3);
-	transition: all .4s ease-in-out;
-}
-.hamburger .hamburger-container img {
-	width: 100%;
-	height: 100%;
-	margin-top: 4px;
-}
-
-.hamburger .hamburger-container:hover {
-	transform: scale(1.5, 1.5);
-}
-/*.hamburger .hamburger-container:hover span {*/
-/*	background: #F3F0EF;*/
-/*	opacity: 1;*/
-/*}*/
-
-.popup {
-	min-width: 100%;
-	min-height: 100vh;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-}
-.popup_container {
-	/*position: fixed;*/
-	display: block;
-	position: relative;
-	/*top: 5%;*/
-	/*left: 0;*/
-	/*right: 0;*/
-	width: 80%;
-	height: 80vh;
-	margin: 0 auto;
-	z-index: 3;
-	background: rgba(248, 245, 245, 0.86);
-	box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.38);
-	border-radius: 10px;
-	padding: 0 5px;
-}
-.popup_close {
-	position: relative;
-	font-weight: 900;
-	color: #fff;
-	font-size: 15px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 40px;
-	height: 40px;
-	margin-left: auto;
-	background: #e92a0f;
-	/*cursor: url('/img/cursor/Hand-Shaped-Mouse-Icon-Vector.svg'), pointer;*/
-	cursor: pointer;
-	border-radius: 0 15% 0 15%;
-}
-.popup_close_item {
-	position: absolute;
-}
-.popup_content {
-	height: 90%;
-	width: 100%;
-}
-
-.popup_canvas {
-	width: 100%;
-	height: 100%;
-}
-
-.close {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	font-size: 20px;
-	position: absolute;
-	top: -60px;
-	right: -60px;
-	width: 30px;
-	height: 30px;
-	background: brown;
-	border-radius: 15px;
-	color: #fff;
-	z-index: 4;
-	cursor: pointer;
-}
-
-.modal-canvas-block {
-	position: fixed;
-	/*opacity: 0;*/
-	top: 10%;
-	right: 0;
-	left: 0;
-	margin-left: auto;
-	margin-right: auto;
-	width: 80%;
-	height: 80%;
-	padding: 20px;
-	z-index: 4;
-	background: black;
-	border-radius: 15px;
-}
-
-.modal-for-resizing {
-	position: fixed;
-	z-index: -1;
-	right: 0;
-	left: 0;
-	height: 80%;
-	width: 80%;
-	padding: 20px;
-	margin-left: auto;
-	margin-right: auto;
-	top: 10%;
-}
-
-.fake-canvas {
-
-}
-
-.modal-canvas-container {
-	position: relative;
-	width: 100%;
-	height: 100%;
-	background: #dddddd;
-	border-radius: 15px;
-}
-
-.prob_canvas {
-	position: relative;
-	width: 100%;
-	height: 100%;
-	z-index: 4;
-}
-
-.modal-for-resizing-container {
-	position: relative;
-	width: 100%;
-	height: 100%;
-	border-radius: 15px;
-}
-
-.fake-canvas {
-	position: relative;
-	width: 100%;
-	height: 100%;
-	z-index: -1;
-}
-
-.animate-modal {
-	animation: fadeIn 1s;
-	-webkit-animation: fadeIn 1s;
-	-moz-animation: fadeIn 1s;
-	-o-animation: fadeIn 1s;
-	-ms-animation: fadeIn 1s;
-}
-
-.animate-canvas {
-	animation: fadeIn 5s;
-	-webkit-animation: fadeIn 5s;
-	-moz-animation: fadeIn 5s;
-	-o-animation: fadeIn 5s;
-	-ms-animation: fadeIn 5s;
-}
-
-@keyframes fadeIn {
-	0% {opacity:0;}
-	100% {opacity:1;}
-}
-
-@-moz-keyframes fadeIn {
-	0% {opacity:0;}
-	100% {opacity:1;}
-}
-
-@-webkit-keyframes fadeIn {
-	0% {opacity:0;}
-	100% {opacity:1;}
-}
-
-@-o-keyframes fadeIn {
-	0% {opacity:0;}
-	100% {opacity:1;}
-}
-
-@-ms-keyframes fadeIn {
-	0% {opacity:0;}
-	100% {opacity:1;}
-}
-
-@supports (object-fit: cover) {
-	#video-bg > video {
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-	}
-}
-
-.show {
-	display: block !important;
-}
-.hide {
-	display: none !important;
-}
-
-.visible {
-	transform: scale(0, 0);
-	opacity: 0;
-	border-radius: 50%;
-	/*z-index: 1;*/
-}
-
-.opacity-on {
-	opacity: 0;
-}
-.opacity-off {
-	opacity: 1;
+.demo-6 {
+	--background-color: #342938;
+	--link-hover-color: #cb9edb;
 }
 
 @media screen and (max-width: 60em) {
@@ -596,5 +239,3 @@ a:focus {
 		margin: 1em 0 0;
 	}
 }
-
-
