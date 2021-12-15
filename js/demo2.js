@@ -24,6 +24,12 @@ const globalForModal = {
   takeFakeCanvas: document.querySelector(".fake-canvas")
 }
 
+// gsap.registerPlugin(ScrollTrigger);
+// var trigger = ScrollTrigger.create({
+//   start: 0,
+//
+// })
+
 const global = {
   cameraPositionNow: null,
   iForPositionZ: null,
@@ -73,16 +79,10 @@ hamburger.addEventListener("click", () => {
     globalForModal.takeProbCanvas.classList.remove("hide")
     globalForModal.takeProbCanvas.classList.add("show")
     hamburgerContainer.classList.add('hamburger-close')
-    gsap.delayedCall(1, () =>{
-      global.takeCanvas.classList.add('hide')
-      global.takeCanvas.classList.remove('show')
-    })
     globalForModal.secondTunnelIsOpen = true
   } else if (globalForModal.takeProbCanvas.className == "modal-canvas-block show") {
     globalForModal.takeProbCanvas.classList.remove("show")
     globalForModal.takeProbCanvas.classList.add("hide")
-    global.takeCanvas.classList.remove('hide')
-    global.takeCanvas.classList.add('show')
     globalForModal.secondTunnelIsOpen = false
     hamburgerContainer.classList.remove('hamburger-close')
   }
@@ -353,7 +353,7 @@ Tunnel.prototype.handleEvents = function() {
 };
 let num1 = 100
 let num3 = 100
-
+let timerTunnel
 Tunnel.prototype.onMouseDown = function() {
 
   if(event.deltaY > 0) {
@@ -365,9 +365,8 @@ Tunnel.prototype.onMouseDown = function() {
       ease: Power2.easeInOut,
     })
 
-    console.log(this)
-
-    setTimeout(() => {
+    clearTimeout(timerTunnel)
+    timerTunnel = setTimeout(() => {
       gsap.to(this, 0, {
         speed: 0,
         ease: Power2.easeInOut // Power1.easeInOut
@@ -384,9 +383,8 @@ Tunnel.prototype.onMouseDown = function() {
       ease: Power2.easeInOut // Power1.easeInOut // Power2.easeInOut
     })
 
-    console.log(this)
-
-    setTimeout(() => {
+    clearTimeout(timerTunnel)
+    timerTunnel = setTimeout(() => {
       gsap.to(this, 0, {
         speed: 0,
         ease: Power2.easeInOut // Power1.easeInOut
@@ -571,12 +569,11 @@ Tunnel.prototype.render = function(time) {
           gsap.to(object.children[0].children[0].material.color, {r: colorB.r, g: colorB.g, b: colorB.b})
           gsap.to(object.children[0].children[1].material.color, {r: object.children[0].material.color.r, g: object.children[0].material.color.g, b: object.children[0].material.color.b})
         }
-        if(global.scrollWhere === 'down' || global.scrollWhere === 'top') {
+        if(global.scrollWhere === 'down' || global.scrollWhere === 'top') { //
           gsap.to(object.children[0].rotation, { z: Math.random() * (max - min) + min, duration: 2})
         }
         gsap.to(object.scale, {x: 1, y: 1, duration: 3, ease: "elastic"})
         gsap.to(object.children[0].children[0].scale, {x: .8, y: .3, duration: 1, ease: "elastic"})
-        // gsap.to(object.children[0].children[1].scale, {x: 1.6, y: 1.7, duration: 1, ease: "elastic"})
       }
     }
 
@@ -897,17 +894,19 @@ ModalTunnel.prototype.handleEvents = function() {
   // document.body.addEventListener('touchstart', this.onMouseDown.bind(this), false);
 };
 let num2 = 100
+let timerModalTunnel
 ModalTunnel.prototype.onMouseDown = function() {
   if(event.deltaY > 0) {
-    num2 += event.deltaY * 3;
+    num2 += event.deltaY * 4.5;
     // scrollDown
     globalForModal.scrollWhere = 'down'
-    TweenMax.to(this, 0, {
+    gsap.to(this, 0, {
       speed: 550 + num2,
       ease: Power2.easeInOut
     })
-    setTimeout(() => {
-      TweenMax.to(this, 0, {
+    clearTimeout(timerModalTunnel)
+    timerModalTunnel = setTimeout(() => {
+      gsap.to(this, 0, {
         speed: 0,
         ease: Power2.easeInOut
       })
@@ -918,12 +917,13 @@ ModalTunnel.prototype.onMouseDown = function() {
     //scrollTop
     num2 += event.deltaY * 4.5
     globalForModal.scrollWhere = 'top'
-    TweenMax.to(this, 0, {
+    gsap.to(this, 0, {
       speed: 550 + -(num2),
       ease: Power2.easeInOut
     })
-    setTimeout(() => {
-      TweenMax.to(this, 0, {
+    clearTimeout(timerModalTunnel)
+    timerModalTunnel = setTimeout(() => {
+      gsap.to(this, 0, {
         speed: 0,
         ease: Power2.easeInOut
       })
@@ -1227,11 +1227,11 @@ function ModalParticle(scene, i, texture, plane, text, textGeometry, textSubGeom
 
 ModalParticle.prototype.update = function (tunnel) {
   if(globalForModal.scrollWhere === "down") {
-    this.percent -= (this.speed - 2  ) * (tunnel.speed)
+    this.percent -= (this.speed  ) * (tunnel.speed)
   } else if(globalForModal.scrollWhere === "top") {
     this.percent += this.speed * (tunnel.speed)
   }
-  this.pos = tunnel.curve.getPoint(1 - ((this.percent + 1)%1)).add(this.offset)
+  this.pos = tunnel.curve.getPoint(1 - ((this.percent + 999999)%1)).add(this.offset)
 
   globalForModal.thisPos = this.pos
   this.mesh.position.x = this.pos.x - 0.000;
