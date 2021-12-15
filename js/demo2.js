@@ -24,8 +24,6 @@ const globalForModal = {
   takeFakeCanvas: document.querySelector(".fake-canvas")
 }
 
-
-
 const global = {
   cameraPositionNow: null,
   iForPositionZ: null,
@@ -60,6 +58,7 @@ var ww = window.innerWidth
 var wh = window.innerHeight
 
 var isMobile = ww < 500
+console.log(isMobile);
 
 const mouse = new THREE.Vector2()
 let currentIntersect = null
@@ -126,8 +125,12 @@ window.addEventListener("mousemove", (event) => {
   mouse.x = event.clientX / ww * 2 - 1
   mouse.y = - (event.clientY / wh) * 2 + 1
 })
+// if(!isMobile) {
 
-window.addEventListener('click', () => {
+// } else {
+
+// }
+window.addEventListener(isMobile ? 'touch' : 'click', () => {
   if(currentIntersect) {
     if(global.videoIsEnd) {
       if(currentIntersect.object.name === 'NAMASTATE' ) {
@@ -297,7 +300,7 @@ Tunnel.prototype.addParticle = function() {
   this.texture6 = [this.texture[5]]
   this.texture7 = [this.texture[6]]
 
-  for (var i = 0; i <= 49; i++) {
+  for (var i = 0; i <= 49; i++) { // 49
     global.iForPositionZ = i
     this.textures.push(this.texture1, this.texture2,this.texture3,this.texture4,this.texture5,this.texture6, this.texture7)
     this.text.push(this.sixText,this.fiveText,this.fourText,this.thirText,this.secText, this.firText,this.eightText, this.sevenText)
@@ -332,20 +335,21 @@ Tunnel.prototype.createMesh = function() {
   this.tubeGeometry = new THREE.TubeGeometry(this.curve, 70, 0.02, 30, false)
   this.tubeGeometry_o = this.tubeGeometry.clone()
   this.tubeMesh = new THREE.Mesh(this.tubeGeometry, this.tubeMaterial);
-  this.scene.add(this.tubeMesh)
+  // this.scene.add(this.tubeMesh)
 };
 
-const clickable = document.querySelector(".clickable")
 Tunnel.prototype.handleEvents = function() {
   window.addEventListener('resize', this.onResize.bind(this), false)
-  clickable.addEventListener('mousewheel', this.onMouseDown.bind(this), false);
-  clickable.addEventListener('touchstart', this.onTouchStart.bind(this), false);
-  clickable.addEventListener('touchmove', this.onTouchMove.bind(this), false);
-  clickable.addEventListener('mousemove', this.onMouseMove.bind(this), false);
-  clickable.addEventListener('mouseleave', (event) => {
+  this.canvas.addEventListener('mousewheel', this.onMouseDown.bind(this), false);
+  this.canvas.addEventListener('touchstart', this.onTouchStart.bind(this), false);
+  this.canvas.addEventListener('touchmove', this.onTouchMove.bind(this), false);
+  if(!isMobile) { 
+  this.canvas.addEventListener('mousemove', this.onMouseMove.bind(this), false);
+  }
+  this.canvas.addEventListener('mouseleave', (event) => {
     global.leaveFromWindow = true
   }, false);
-  clickable.addEventListener('mouseover', () => {
+  this.canvas.addEventListener('mouseover', () => {
     global.leaveFromWindow = false
   })
 };
@@ -399,11 +403,60 @@ let x1 = null
 let y1 = null
 
 Tunnel.prototype.onTouchStart = function() {
-
+  const firstTouch = event.touches[0]
+  x1 = firstTouch.clientX
+  y1 = firstTouch.clientY
 }
 
 Tunnel.prototype.onTouchMove = function() {
+  if(!x1 || !y1) {
+    return false
+  }
+  let x2 = event.touches[0].clientX
+  let y2 = event.touches[0].clientY
 
+  let xDiff = x2 - x1
+  let yDiff = y2 - y1
+
+  if(yDiff > 0) {
+    console.log('down')
+    global.scrollWhere = 'down'
+
+    gsap.to(this, 0, {
+      speed: 500 + Math.random() * (1500 - 1300) + 1300,
+      ease: Power2.easeInOut,
+    })
+    clearTimeout(timerTunnel)
+    timerTunnel = setTimeout(() => {
+      gsap.to(this, 0, {
+        speed: 0,
+        ease: Power2.easeInOut // Power1.easeInOut
+      })
+      global.scrollWhere = null
+    }, 300)
+  }
+  else {
+    console.log('top')
+    global.scrollWhere = 'top'
+
+    gsap.to(this, 0, {
+      speed: 500 + Math.random() * (3000 - 2700) + 2700,
+      ease: Power2.easeInOut,
+    })
+    clearTimeout(timerTunnel)
+    timerTunnel = setTimeout(() => {
+      gsap.to(this, 0, {
+        speed: 0,
+        ease: Power2.easeInOut, // Power1.easeInOut
+        onChange(){
+        }
+      })
+      global.scrollWhere = null
+
+    }, 300)
+  }
+  x1 = null
+  y1 = null
 }
 
 Tunnel.prototype.onResize = function() {
@@ -533,86 +586,170 @@ Tunnel.prototype.render = function(time) {
 
     for (const object of global.arrForGroup) {
       if(!global.checkModal && !globalForModal.secondTunnelIsOpen) {
-        if(object.children[0].children[0].material.alphaMap.name === 'CONNECT') {
-          gsap.to(object.children[0].children[0].scale, {x: 0.3, y: 0.1})
-        } else if(object.children[0].children[0].material.alphaMap.name === 'AWARENESS') {
-          gsap.to(object.children[0].children[0].scale, {x: 1.5, y: 0.15})
-        } else if(object.children[0].children[0].material.alphaMap.name === 'JOURNEY') {
-          gsap.to(object.children[0].children[0].scale, {x: 0.3, y: 0.15})
-        } else if(object.children[0].children[0].material.alphaMap.name === 'COMMUNITAS') {
-          gsap.to(object.children[0].children[0].scale, {x: 1.7, y: 0.15})
-        } else if(object.children[0].children[0].material.alphaMap.name === 'SENSORIA') {
-          gsap.to(object.children[0].children[0].scale, {x: 0.5, y: 0.15})
-        } else if(object.children[0].children[0].material.alphaMap.name === 'ALL GOODS') {
-          gsap.to(object.children[0].children[0].scale, {x: 0.6, y: 0.15})
-        } else if(object.children[0].children[0].material.alphaMap.name === 'NAMA VISION') {
-          gsap.to(object.children[0].children[0].scale, {x: 1.3, y: 0.3})
-        } else if(object.children[0].children[0].material.alphaMap.name === 'NAMASTATE') {
-          gsap.to(object.children[0].children[0].scale, {x: 1.4, y: 0.4})
-        }
-        if(object.children[0].children[1].material.alphaMap.name === 'mind') {
-          gsap.to(object.children[0].children[1].scale, {x: 2, y: 2})
-        } else if(object.children[0].children[1].material.alphaMap.name === 'exp') {
-          gsap.to(object.children[0].children[1].scale, {x: 2.5, y: 2})
-        } else if(object.children[0].children[1].material.alphaMap.name === 'stream') {
-          gsap.to(object.children[0].children[1].scale, {x: 2.5, y: 2})
-        } else if(object.children[0].children[1].material.alphaMap.name === 'shop') {
-          gsap.to(object.children[0].children[1].scale, {x: 1.3, y: 1.4})
-        } else if(object.children[0].children[1].material.alphaMap.name === 'stay') {
-          gsap.to(object.children[0].children[1].scale, {x: 0.75, y: 1.2})
-        } else if(object.children[0].children[1].material.alphaMap.name === 'discover') {
-          gsap.to(object.children[0].children[1].scale, {x: 1.7, y: 1.7})
-        }else if(object.children[0].children[1].material.alphaMap.name === 'contact') {
-          gsap.to(object.children[0].children[1].scale, {x: 1.8, y: 1.7})
-        }
-        if( object.children[0].material.name === 'blue' ) {
-          gsap.to(object.children[0].children[0].material.color, {
-            r: colorF.r,
-            g: colorF.g,
-            b: colorF.b
-          })
-          gsap.to(object.children[0].children[1].material.color, {
-            r: object.children[0].material.color.r,
-            g: object.children[0].material.color.g,
-            b: object.children[0].material.color.b
-          })
+        if(!isMobile) {
+          if(object.children[0].children[0].material.alphaMap.name === 'CONNECT') {
+            gsap.to(object.children[0].children[0].scale, {x: 0.8, y: 0.25,})
+          } else if(object.children[0].children[0].material.alphaMap.name === 'AWARENESS') {
+            gsap.to(object.children[0].children[0].scale, {x: 1.1, y: 0.25,})
+          } else if(object.children[0].children[0].material.alphaMap.name === 'JOURNEY') {
+            gsap.to(object.children[0].children[0].scale, {x: 0.6, y: 0.25})
+          } else if(object.children[0].children[0].material.alphaMap.name === 'COMMUNITAS') {
+            gsap.to(object.children[0].children[0].scale, {x: 1.3, y: 0.25})
+          } else if(object.children[0].children[0].material.alphaMap.name === 'SENSORIA') {
+            gsap.to(object.children[0].children[0].scale, {x: 0.7, y: 0.25})
+          } else if(object.children[0].children[0].material.alphaMap.name === 'ALL GOODS') {
+            gsap.to(object.children[0].children[0].scale, {x: 0.85, y: 0.25})
+          } else if(object.children[0].children[0].material.alphaMap.name === 'NAMA VISION') {
+            gsap.to(object.children[0].children[0].scale, {x: 1.3, y: 0.45})
+          } else if(object.children[0].children[0].material.alphaMap.name === 'NAMASTATE') {
+            gsap.to(object.children[0].children[0].scale, {x: 1.4, y: 0.4})
+          }
+          if(object.children[0].children[1].material.alphaMap.name === 'mind') {
+            gsap.to(object.children[0].children[1].scale, {x: 2, y: 2})
+          } else if(object.children[0].children[1].material.alphaMap.name === 'exp') {
+            gsap.to(object.children[0].children[1].scale, {x: 2.5, y: 2})
+          } else if(object.children[0].children[1].material.alphaMap.name === 'stream') {
+            gsap.to(object.children[0].children[1].scale, {x: 2.5, y: 2})
+          } else if(object.children[0].children[1].material.alphaMap.name === 'shop') {
+            gsap.to(object.children[0].children[1].scale, {x: 1.3, y: 1.4})
+          } else if(object.children[0].children[1].material.alphaMap.name === 'stay') {
+            gsap.to(object.children[0].children[1].scale, {x: 0.75, y: 1.2})
+          } else if(object.children[0].children[1].material.alphaMap.name === 'discover') {
+            gsap.to(object.children[0].children[1].scale, {x: 1.7, y: 1.7})
+          }else if(object.children[0].children[1].material.alphaMap.name === 'contact') {
+            gsap.to(object.children[0].children[1].scale, {x: 1.8, y: 1.7})
+          }
+          if( object.children[0].material.name === 'blue' ) {
+            gsap.to(object.children[0].children[0].material.color, {
+              r: colorF.r,
+              g: colorF.g,
+              b: colorF.b
+            })
+            gsap.to(object.children[0].children[1].material.color, {
+              r: object.children[0].material.color.r,
+              g: object.children[0].material.color.g,
+              b: object.children[0].material.color.b
+            })
+          } else {
+            gsap.to(object.children[0].children[0].material.color, {r: colorB.r, g: colorB.g, b: colorB.b})
+            gsap.to(object.children[0].children[1].material.color, {r: object.children[0].material.color.r, g: object.children[0].material.color.g, b: object.children[0].material.color.b})
+          }
+          if(global.scrollWhere === 'down' || global.scrollWhere === 'top') { //
+            gsap.to(object.children[0].rotation, { z: Math.random() * (max - min) + min, duration: 2})
+          }
+          gsap.to(object.scale, {x: 1, y: 1, duration: 3})
+          gsap.to(object.children[0].children[0].scale, {x: .6, y: .3, duration: 1})
+        
+          if ( this.intersectsText.length > 0 ) {
+            if(!global.checkModal && !globalForModal.secondTunnelIsOpen) {
+              const res = this.intersectsText.filter(function (res) {
+                return res.object;
+              })[0];
+              if (res && res.object) {
+                selectedObject = res.object;
+                gsap.to(selectedObject.scale, {x: .9, y: .3, duration: 1, ease: 'elastic'})
+                currentName = selectedObject.name
+                if (selectedObject.parent.material.name === 'blue') {
+                  gsap.to(selectedObject.material.color, {r: 0, g: 0, b: 0})
+                  gsap.to(selectedObject.parent.children[1].material.color, {
+                    r: 0,
+                    g: 0,
+                    b: 0
+                  })
+                }
+                 else {
+                  gsap.to(selectedObject.material.color, {r: 2, g: 2, b: 2})
+                  gsap.to(selectedObject.parent.children[1].material.color, {r: 2, g: 2, b: 2})
+                }
+                gsap.to( selectedObject.parent.parent.scale, {x: 1.02, y: 1.02, duration: 3, ease: 'elastic'})
+              }
+            }
+          }
         } else {
-          gsap.to(object.children[0].children[0].material.color, {r: colorB.r, g: colorB.g, b: colorB.b})
-          gsap.to(object.children[0].children[1].material.color, {r: object.children[0].material.color.r, g: object.children[0].material.color.g, b: object.children[0].material.color.b})
+          if(object.children[0].children[0].material.alphaMap.name === 'CONNECT') {
+            gsap.to(object.children[0].children[0].scale, {x: 0.8, y: 0.25,})
+          } else if(object.children[0].children[0].material.alphaMap.name === 'AWARENESS') {
+            gsap.to(object.children[0].children[0].scale, {x: 1.1, y: 0.25,})
+          } else if(object.children[0].children[0].material.alphaMap.name === 'JOURNEY') {
+            gsap.to(object.children[0].children[0].scale, {x: 0.6, y: 0.25})
+          } else if(object.children[0].children[0].material.alphaMap.name === 'COMMUNITAS') {
+            gsap.to(object.children[0].children[0].scale, {x: 1.3, y: 0.25})
+          } else if(object.children[0].children[0].material.alphaMap.name === 'SENSORIA') {
+            gsap.to(object.children[0].children[0].scale, {x: 0.7, y: 0.25})
+          } else if(object.children[0].children[0].material.alphaMap.name === 'ALL GOODS') {
+            gsap.to(object.children[0].children[0].scale, {x: 0.85, y: 0.25})
+          } else if(object.children[0].children[0].material.alphaMap.name === 'NAMA VISION') {
+            gsap.to(object.children[0].children[0].scale, {x: 1.3, y: 0.45})
+          } else if(object.children[0].children[0].material.alphaMap.name === 'NAMASTATE') {
+            gsap.to(object.children[0].children[0].scale, {x: 1.4, y: 0.4})
+          }
+          if(object.children[0].children[1].material.alphaMap.name === 'mind') {
+            gsap.to(object.children[0].children[1].scale, {x: 2, y: 2})
+          } else if(object.children[0].children[1].material.alphaMap.name === 'exp') {
+            gsap.to(object.children[0].children[1].scale, {x: 2.5, y: 2})
+          } else if(object.children[0].children[1].material.alphaMap.name === 'stream') {
+            gsap.to(object.children[0].children[1].scale, {x: 2.5, y: 2})
+          } else if(object.children[0].children[1].material.alphaMap.name === 'shop') {
+            gsap.to(object.children[0].children[1].scale, {x: 1.3, y: 1.4})
+          } else if(object.children[0].children[1].material.alphaMap.name === 'stay') {
+            gsap.to(object.children[0].children[1].scale, {x: 0.75, y: 1.2})
+          } else if(object.children[0].children[1].material.alphaMap.name === 'discover') {
+            gsap.to(object.children[0].children[1].scale, {x: 1.7, y: 1.7})
+          }else if(object.children[0].children[1].material.alphaMap.name === 'contact') {
+            gsap.to(object.children[0].children[1].scale, {x: 1.8, y: 1.7})
+          }
+          if( object.children[0].material.name === 'blue' ) {
+            gsap.to(object.children[0].children[0].material.color, {
+              r: colorF.r,
+              g: colorF.g,
+              b: colorF.b
+            })
+            gsap.to(object.children[0].children[1].material.color, {
+              r: object.children[0].material.color.r,
+              g: object.children[0].material.color.g,
+              b: object.children[0].material.color.b
+            })
+          } else {
+            gsap.to(object.children[0].children[0].material.color, {r: colorB.r, g: colorB.g, b: colorB.b})
+            gsap.to(object.children[0].children[1].material.color, {r: object.children[0].material.color.r, g: object.children[0].material.color.g, b: object.children[0].material.color.b})
+          }
+          if(global.scrollWhere === 'down' || global.scrollWhere === 'top') { //
+            gsap.to(object.children[0].rotation, { z: Math.random() * (max - min) + min, duration: 2})
+          }
+          gsap.to(object.scale, {x: 1, y: 1, duration: 3})
+          gsap.to(object.children[0].children[0].scale, {x: .6, y: .3, duration: 1})
+
+          if ( this.intersectsText.length > 0 ) {
+            if(!global.checkModal && !globalForModal.secondTunnelIsOpen) {
+              const res = this.intersectsText.filter(function (res) {
+                return res.object;
+              })[0];
+              if (res && res.object) {
+                selectedObject = res.object;
+                gsap.to(selectedObject.scale, {x: .9, y: .3, duration: 1, ease: 'elastic'})
+                currentName = selectedObject.name
+                if (selectedObject.parent.material.name === 'blue') {
+                  gsap.to(selectedObject.material.color, {r: 0, g: 0, b: 0})
+                  gsap.to(selectedObject.parent.children[1].material.color, {
+                    r: 0,
+                    g: 0,
+                    b: 0
+                  })
+                }
+                 else {
+                  gsap.to(selectedObject.material.color, {r: 2, g: 2, b: 2})
+                  gsap.to(selectedObject.parent.children[1].material.color, {r: 2, g: 2, b: 2})
+                }
+                gsap.to( selectedObject.parent.parent.scale, {x: 1.02, y: 1.02, duration: 3, })
+              }
+            }
+          }
         }
-        if(global.scrollWhere === 'down' || global.scrollWhere === 'top') { //
-          gsap.to(object.children[0].rotation, { z: Math.random() * (max - min) + min, duration: 2})
-        }
-        gsap.to(object.scale, {x: 1, y: 1, duration: 3, ease: "elastic"})
-        gsap.to(object.children[0].children[0].scale, {x: .8, y: .3, duration: 1, ease: "elastic"})
+        
       }
     }
 
-    if ( this.intersectsText.length > 0 ) {
-      if(!global.checkModal && !globalForModal.secondTunnelIsOpen) {
-        const res = this.intersectsText.filter(function (res) {
-          return res.object;
-        })[0];
-        if (res && res.object) {
-          selectedObject = res.object;
-          gsap.to(selectedObject.scale, {x: .9, y: .3, duration: 3, ease: 'elastic'})
-          currentName = selectedObject.name
-          if (selectedObject.parent.material.name === 'blue') {
-            gsap.to(selectedObject.material.color, {r: 0, g: 0, b: 0})
-            gsap.to(selectedObject.parent.children[1].material.color, {
-              r: 0,
-              g: 0,
-              b: 0
-            })
-          }
-           else {
-            gsap.to(selectedObject.material.color, {r: 2, g: 2, b: 2})
-            gsap.to(selectedObject.parent.children[1].material.color, {r: 2, g: 2, b: 2})
-          }
-          gsap.to( selectedObject.parent.parent.scale, {x: 1.02, y: 1.02, duration: 3, ease: 'elastic'})
-        }
-      }
-    }
+
 
     if(this.intersectsText.length) {
       if(currentIntersect === null) {
@@ -886,23 +1023,21 @@ ModalTunnel.prototype.createMesh = function() {
 };
 
 ModalTunnel.prototype.handleEvents = function() {
-  const canvas = this.canvas
-
-  const popupCanvasContainer = document.querySelector(".prob_canvas")
   window.addEventListener('resize', this.onResize.bind(this), false)
-  popupCanvasContainer.addEventListener('mousewheel', this.onMouseDown.bind(this), false);
-  popupCanvasContainer.addEventListener('mousemove', this.onMouseMove.bind(this), false);
-  popupCanvasContainer.addEventListener('mouseleave', (event) => {
+  this.canvas.addEventListener('mousewheel', this.onMouseDown.bind(this), false);
+  this.canvas.addEventListener('mousemove', this.onMouseMove.bind(this), false);
+  this.canvas.addEventListener('touchstart', this.onTouchStart.bind(this), false);
+  this.canvas.addEventListener('touchmove', this.onTouchMove.bind(this), false);
+  this.canvas.addEventListener('mouseleave', (event) => {
     globalForModal.leaveFromWindow = true
   }, false);
-  popupCanvasContainer.addEventListener('mouseover', () => {
+  this.canvas.addEventListener('mouseover', () => {
     globalForModal.leaveFromWindow = false
   })
-  canvas.addEventListener("mousemove", (event) => {
-    mouse1.x = ( (event.layerX - canvas.offsetLeft) / canvas.clientWidth ) * 2 - 1;
-    mouse1.y = ( (event.layerY - canvas.offsetTop) / canvas.clientHeight ) * -2 + 1;
+  this.canvas.addEventListener("mousemove", (event) => {
+    mouse1.x = ( (event.layerX - this.canvas.offsetLeft) / this.canvas.clientWidth ) * 2 - 1;
+    mouse1.y = ( (event.layerY - this.canvas.offsetTop) / this.canvas.clientHeight ) * -2 + 1;
   })
-  // document.body.addEventListener('touchstart', this.onMouseDown.bind(this), false);
 };
 let num2 = 100
 let timerModalTunnel
@@ -942,6 +1077,63 @@ ModalTunnel.prototype.onMouseDown = function() {
       globalForModal.scrollWhere = null
     }, 200)
   }
+}
+
+let x3 = null
+let y3 = null
+
+ModalTunnel.prototype.onTouchStart = function() {
+  const firstTouch = event.touches[0]
+  x3 = firstTouch.clientX
+  y3 = firstTouch.clientY
+}
+
+ModalTunnel.prototype.onTouchMove = function() {
+  if(!x3 || !y3) {
+    return false
+  }
+  let x4 = event.touches[0].clientX
+  let y4 = event.touches[0].clientY
+
+  let xDiff = x4 - x3
+  let yDiff = y4 - y3
+
+  if(yDiff > 0) {
+    console.log('down')
+    globalForModal.scrollWhere = 'down'
+
+    gsap.to(this, 0, {
+      speed: 500 + Math.random() * (3000 - 2700) + 2700,
+      ease: Power2.easeInOut,
+    })
+    clearTimeout(timerModalTunnel)
+    timerModalTunnel = setTimeout(() => {
+      gsap.to(this, 0, {
+        speed: 0,
+        ease: Power2.easeInOut // Power1.easeInOut
+      })
+      globalForModal.scrollWhere = null
+    }, 300)
+  }
+  else {
+    console.log('top')
+    globalForModal.scrollWhere = 'top'
+
+    gsap.to(this, 0, {
+      speed: 500 + Math.random() * (3000 - 2700) + 2700,
+      ease: Power2.easeInOut,
+    })
+    clearTimeout(timerModalTunnel)
+    timerModalTunnel = setTimeout(() => {
+      gsap.to(this, 0, {
+        speed: 0,
+        ease: Power2.easeInOut, // Power1.easeInOut
+      })
+      globalForModal.scrollWhere = null
+    }, 300)
+  }
+  x3 = null
+  y3 = null
 }
 
 const popupContent = document.querySelector(".popup_content")
@@ -1069,23 +1261,23 @@ ModalTunnel.prototype.render = function(time) {
   this.intersectsText = this.raycaster.intersectObjects(globalForModal.arrForTexts)
 
   for (const object of globalForModal.arrForGroup) {
-      if(object.children[0].children[0].material.alphaMap.name === 'CONNECT') {
-        gsap.to(object.children[0].children[0].scale, {x: 0.3, y: 0.1})
-      } else if(object.children[0].children[0].material.alphaMap.name === 'AWARENESS') {
-        gsap.to(object.children[0].children[0].scale, {x: 1.5, y: 0.15})
-      } else if(object.children[0].children[0].material.alphaMap.name === 'JOURNEY') {
-        gsap.to(object.children[0].children[0].scale, {x: 0.3, y: 0.15})
-      } else if(object.children[0].children[0].material.alphaMap.name === 'COMMUNITAS') {
-        gsap.to(object.children[0].children[0].scale, {x: 1.7, y: 0.15})
-      } else if(object.children[0].children[0].material.alphaMap.name === 'SENSORIA') {
-        gsap.to(object.children[0].children[0].scale, {x: 0.5, y: 0.15})
-      } else if(object.children[0].children[0].material.alphaMap.name === 'ALL GOODS') {
-        gsap.to(object.children[0].children[0].scale, {x: 0.6, y: 0.15})
-      } else if(object.children[0].children[0].material.alphaMap.name === 'NAMA VISION') {
-        gsap.to(object.children[0].children[0].scale, {x: 1.3, y: 0.3})
-      } else if(object.children[0].children[0].material.alphaMap.name === 'NAMASTATE') {
-        gsap.to(object.children[0].children[0].scale, {x: 1.4, y: 0.4})
-      }
+    if(object.children[0].children[0].material.alphaMap.name === 'CONNECT') {
+      gsap.to(object.children[0].children[0].scale, {x: 0.8, y: 0.25,})
+    } else if(object.children[0].children[0].material.alphaMap.name === 'AWARENESS') {
+      gsap.to(object.children[0].children[0].scale, {x: 1.1, y: 0.25,})
+    } else if(object.children[0].children[0].material.alphaMap.name === 'JOURNEY') {
+      gsap.to(object.children[0].children[0].scale, {x: 0.6, y: 0.25})
+    } else if(object.children[0].children[0].material.alphaMap.name === 'COMMUNITAS') {
+      gsap.to(object.children[0].children[0].scale, {x: 1.3, y: 0.25})
+    } else if(object.children[0].children[0].material.alphaMap.name === 'SENSORIA') {
+      gsap.to(object.children[0].children[0].scale, {x: 0.7, y: 0.25})
+    } else if(object.children[0].children[0].material.alphaMap.name === 'ALL GOODS') {
+      gsap.to(object.children[0].children[0].scale, {x: 0.85, y: 0.25})
+    } else if(object.children[0].children[0].material.alphaMap.name === 'NAMA VISION') {
+      gsap.to(object.children[0].children[0].scale, {x: 1.3, y: 0.45})
+    } else if(object.children[0].children[0].material.alphaMap.name === 'NAMASTATE') {
+      gsap.to(object.children[0].children[0].scale, {x: 1.4, y: 0.4})
+    }
       if(object.children[0].children[1].material.alphaMap.name === 'mind') {
         gsap.to(object.children[0].children[1].scale, {x: 2, y: 2})
       } else if(object.children[0].children[1].material.alphaMap.name === 'exp') {
@@ -1119,8 +1311,8 @@ ModalTunnel.prototype.render = function(time) {
       if(globalForModal.scrollWhere === 'down' || globalForModal.scrollWhere === 'top') {
         gsap.to(object.children[0].rotation, { z: Math.random() * (max - min) + min, duration: 2})
       }
-      gsap.to(object.scale, {x: 1, y: 1, duration: 3, ease: "elastic"})
-      gsap.to(object.children[0].children[0].scale, {x: .8, y: .3, duration: 1, ease: "elastic"})
+      gsap.to(object.scale, {x: 1, y: 1, duration: 3, })
+      gsap.to(object.children[0].children[0].scale, {x: .8, y: .3, duration: 1, })
       // gsap.to(object.children[0].children[1].scale, {x: 1.6, y: 1.7, duration: 1, ease: "elastic"})
   }
 
