@@ -188,7 +188,7 @@ a:focus {
 
 /* Content */
 .content {
-	overflow: hidden;
+	/*overflow: hidden;*/
 	padding: 0;
 }
 
@@ -196,6 +196,14 @@ a:focus {
 	min-width: 100%;
 	min-height: 100vh;
 }
+
+/*.scrollTarget {*/
+/*	position: absolute;*/
+/*	height: 10000vh;*/
+/*	width: 100px;*/
+/*	top: 0;*/
+/*	z-index: 0;*/
+/*}*/
 .modal_container {
 	position: fixed;
 	display: block;
@@ -270,6 +278,11 @@ a:focus {
 
 #scene.clickable{
 	position: fixed;
+	/*top: 0;*/
+	/*left: 0;*/
+	/*width: 100%;*/
+	/*height:100vh;*/
+	/*z-index: 2;*/
 	z-index: 4;
 	/*transition: transform 2s ease-in-out;*/
 }
@@ -307,7 +320,7 @@ a:focus {
 	right: 0;
 	bottom: 0;
 	left: 0;
-	overflow: hidden;
+	/*overflow: hidden;*/
 	z-index: 3;
 	opacity: 1;
 	transition: all 1s ease-in;

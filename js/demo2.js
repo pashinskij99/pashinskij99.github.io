@@ -24,11 +24,7 @@ const globalForModal = {
   takeFakeCanvas: document.querySelector(".fake-canvas")
 }
 
-// gsap.registerPlugin(ScrollTrigger);
-// var trigger = ScrollTrigger.create({
-//   start: 0,
-//
-// })
+
 
 const global = {
   cameraPositionNow: null,
@@ -354,20 +350,22 @@ Tunnel.prototype.handleEvents = function() {
 let num1 = 100
 let num3 = 100
 let timerTunnel
-Tunnel.prototype.onMouseDown = function() {
+let down, top1
 
+Tunnel.prototype.onMouseDown = function() {
   if(event.deltaY > 0) {
+
     num1 += event.deltaY * 4.5
     // scrollDown
     global.scrollWhere = 'down'
-    gsap.to(this, 0, {
+    down = gsap.to(this, 0, {
       speed: 550 + num1, // 550 + num1
       ease: Power2.easeInOut,
     })
 
     clearTimeout(timerTunnel)
     timerTunnel = setTimeout(() => {
-      gsap.to(this, 0, {
+      down = gsap.to(this, 0, {
         speed: 0,
         ease: Power2.easeInOut // Power1.easeInOut
       })
@@ -378,14 +376,14 @@ Tunnel.prototype.onMouseDown = function() {
     //scrollTop
     global.scrollWhere = 'top'
     num3 += event.deltaY * 4.5
-    gsap.to(this, 0, {
+    top1 = gsap.to(this, 0, {
       speed: 550 - num3,
       ease: Power2.easeInOut // Power1.easeInOut // Power2.easeInOut
     })
 
     clearTimeout(timerTunnel)
     timerTunnel = setTimeout(() => {
-      gsap.to(this, 0, {
+      top1 = gsap.to(this, 0, {
         speed: 0,
         ease: Power2.easeInOut // Power1.easeInOut
       })
@@ -491,7 +489,7 @@ Tunnel.prototype.updateCurve = function() {
 
 let selectedObject = null, max = -0.15, min = 0.15
 const colorF = new THREE.Color("#F3F0EF")
-const colorB = new THREE.Color("#4595A3")
+const colorB = new THREE.Color("#3B5971")
 
 Tunnel.prototype.render = function(time) {
   if(!global.checkModal && global.videoIsEnd && !global.leaveFromWindow) {
